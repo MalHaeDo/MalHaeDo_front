@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WriteScreen extends StatefulWidget {
   @override
@@ -24,6 +25,16 @@ class _WriteScreenState extends State<WriteScreen> {
     _textController.dispose();
     super.dispose();
   }
+
+  void _saveMessage() async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('saved_message', _textController.text);
+}
+
+void _clearMessage() async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.remove('saved_message');
+}
 
   @override
   Widget build(BuildContext context) {
@@ -204,6 +215,7 @@ class _WriteScreenState extends State<WriteScreen> {
                         style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {
+                        _saveMessage();
                         Navigator.of(context).pop();
                         Navigator.of(context).pop(true);
                         setState(() {

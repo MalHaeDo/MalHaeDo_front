@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -7,6 +8,19 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _showMessage = false;
+
+  @override
+  void initState() {
+  super.initState();
+  _checkSavedMessage();
+}
+
+void _checkSavedMessage() async {
+  final prefs = await SharedPreferences.getInstance();
+  setState(() {
+    _showMessage = prefs.getString('saved_message') != null;
+  });
+}
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      _showMessage ? '답장이 도착했네!' : '힘껏 날려보시게',
+                      _showMessage ? '힘껏 날려보시게!' : '모든 감정을 담아보게, 괜찮네',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
