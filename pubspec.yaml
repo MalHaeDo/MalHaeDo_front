@@ -25,6 +25,7 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   flutter_svg: ^2.0.17
   shared_preferences: ^2.5.2
+  flutter_native_splash: ^2.4.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -52,6 +53,7 @@ flutter:
       - assets/images/bottle.png
       - assets/images/penguin.svg
       - assets/images/paper.png
+      - assets/images/Splash.png
       - assets/images/full_bottle.png
       - assets/images/paper1.png
       - assets/images/comment.png
