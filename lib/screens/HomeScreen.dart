@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      _showMessage ? '힘껏 날려보시게!' : '답장이 도착했네!',
+                      _showMessage ? '답장이 도착했네!' : '힘껏 날려보시게!',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -117,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: Center(
                         child: Image.asset(
-                          'assets/bottle.png', // 병 아이콘 이미지 (없으면 아이콘으로 대체)
+                          'assets/images/bottle.png', // 병 아이콘 이미지 (없으면 아이콘으로 대체)
                           width: 30,
                           height: 30,
                           // 이미지가 없는 경우 아래 child 대신 사용

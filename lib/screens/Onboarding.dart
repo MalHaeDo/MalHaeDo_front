@@ -10,38 +10,36 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
   int _currentPage = 0;
   double _progress = 0.0;
 
-  // 각 페이지에 표시될 대화 내용
   final List<Map<String, String>> _promptData = [
     {
       'title': '곰둥 이장님',
       'content': '안녕 오시게, 난 평안해를 주름잡는 말해도의 이장, 곰둥이라네.\n자네의 이름은 어떻게 되는가 뚜벅?',
-      'button': '라고 해!'
     },
     {
       'title': '곰둥 이장님',
       'content': '웅..멋진 이름이로군 이 곳은 온전히 자네만 있는 섬, __도라네 뚜벅~',
-      'button': '라고 해!'
     },
     {
       'title': '곰둥 이장님',
       'content': '',
-      'button': '답문을 바라지 않으면?'
     },
     {
       'title': '곰둥 이장님',
       'content': '',
-      'button': '답문을 바라지 않으면?'
     },
     {
       'title': '곰둥 이장님',
       'content': '',
-      'button': '도움이 된다면 언제든지!'
     },
-    {
-      'title': '곰둥 이장님',
-      'content': '',
-      'button': '좋아 그럼 또 보자!'
-    },
+  ];
+
+  final List<String> _buttonData = [
+    '라고 해!',
+    '라고 해!',
+    '답문을 바라지 않으면?',
+    '답문을 바라지 않으면?',
+    '도움이 된다면 언제든지!',
+    '좋아 그럼 또 보자!',
   ];
 
   void _goToNextPage() {
@@ -69,18 +67,15 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
     return Scaffold(
       body: Stack(
         children: [
-            // 고정된 배경 이미지
-            Container(
+          Container(
             decoration: BoxDecoration(
-              color: Color(0xFFAFE3F2), // 이미지 대신 하늘색 배경 (필요에 따라 AssetImage로 변경)
+              color: Color(0xFFAFE3F2),
               image: DecorationImage(
-              image: AssetImage('assets/images/Onboarding_image_${_currentPage + 1}.png'),
-              fit: BoxFit.cover,
+                image: AssetImage('assets/images/Onboarding_image_${_currentPage + 1}.png'),
+                fit: BoxFit.cover,
               ),
             ),
-            ),
-          
-          // 뒤로가기 버튼
+          ),
           Positioned(
             top: 40,
             left: 16,
@@ -89,10 +84,8 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
               onPressed: _goToPreviousPage,
             ),
           ),
-          
-          // 진행 상태 바
           Positioned(
-            top: 50,
+            top: 60,
             left: 60,
             right: 16,
             child: Container(
@@ -113,100 +106,68 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
               ),
             ),
           ),
-          
-            // 현재 페이지 내용
-            Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-              SizedBox(height: 100),
-              Image.asset(
-                'assets/images/comment.png',
-                width: 180,
-                height: 180,
-              ),
-              SizedBox(height: 20),
-              Container(
-                width: 300,
-                padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                color: Color(0xFFF5ECD7),
-                borderRadius: BorderRadius.circular(20),
+          Positioned(
+            bottom: 100,
+            left: 24,
+            right: 24,
+            child: Container(
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/comment.png'),
+                  fit: BoxFit.contain,
                 ),
-                child: Column(
+              ),
+              constraints: BoxConstraints(
+                maxWidth: 1000,
+              ),
+              child: Column(
                 children: [
                   Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: Color(0xBF8D5A34),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    _promptData[_currentPage]['title']!,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  ),
-                  SizedBox(height: 15),
-                  if (_currentPage == 0) ...[
-                  TextField(
-                    onChanged: (value) {
-                    setState(() {
-                      _promptData[_currentPage]['content'] = '안녕 오시게, 난 평안해를 주름잡는 말해도의 이장, 곰둥이라네.\n자네의 이름은 어떻게 되는가 뚜벅?';
-                    });
-                    },
-                    decoration: InputDecoration(
-                    hintText: '내 이름은 (최대 5글자)',
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Color(0xBF8D5A34),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      _promptData[_currentPage]['title']!,
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
-                  ] else if (_currentPage == 1) ...[
-                  TextField(
-                    onChanged: (value) {
-                    setState(() {
-                      _promptData[_currentPage]['content'] = '웅..멋진 이름이로군 이 곳은 온전히 자네만 있는 섬, $value 도라네 뚜벅~';
-                    });
-                    },
-                    decoration: InputDecoration(
-                    hintText: '(최대 5글자)',
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                    setState(() {
-                      Future.delayed(Duration(seconds: 3), () {
-                      setState(() {
-                        _promptData[_currentPage]['content'] = '섬 이름이 설정되었습니다!';
-                      });
-                      });
-                    });
-                    },
-                    child: Text('확인'),
-                  ),
-                  ] else ...[
-                  Text(
-                    _promptData[_currentPage]['content']!,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 15),
-                  ),
-                  ],
                   SizedBox(height: 15),
-                  Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 12),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(_promptData[_currentPage]['button']!),
-                  ),
+                  if (_currentPage == 0)
+                    TextField(
+                      onChanged: (value) {
+                        setState(() {
+                          _promptData[_currentPage]['content'] = '안녕 오시게, 난 평안해를 주름잡는 말해도의 이장, 곰둥이라네.\n자네의 이름은 어떻게 되는가 뚜벅?';
+                        });
+                      },
+                      decoration: InputDecoration(
+                        hintText: '내 이름은 (최대 5글자)',
+                      ),
+                    )
+                  else if (_currentPage == 1)
+                    TextField(
+                      onChanged: (value) {
+                        setState(() {
+                          _promptData[_currentPage]['content'] = '웅..멋진 이름이로군 이 곳은 온전히 자네만 있는 섬, $value 도라네 뚜벅~';
+                        });
+                      },
+                      decoration: InputDecoration(
+                        hintText: '(최대 5글자)',
+                      ),
+                    )
+                  else
+                    Text(
+                      _promptData[_currentPage]['content']!,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 15),
+                    ),
+                  SizedBox(height: 15),
                 ],
-                ),
               ),
-              ],
             ),
-            ),
-          
-          // 다음 버튼
+          ),
           Positioned(
             bottom: 40,
             left: 24,
@@ -222,7 +183,7 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
                 padding: EdgeInsets.symmetric(vertical: 16),
               ),
               child: Text(
-                '라고 해!',
+                _buttonData[_currentPage],
                 style: TextStyle(fontSize: 16),
               ),
             ),

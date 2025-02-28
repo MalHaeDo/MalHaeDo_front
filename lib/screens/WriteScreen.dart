@@ -103,7 +103,7 @@ class _WriteScreenState extends State<WriteScreen> {
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
-                          '지금 느끼는 감정을 편안하기 낙해하려 하지 말고,\n내가 이런 감정을 느끼고 있구나라고 인정해보세시네.',
+                          '지금 느끼는 감정을 편안하기 낙해하려 하지 말고,\n내가 이런 감정을 느끼고 있구나라고 인정해보시게나.',
                           style: TextStyle(fontSize: 14),
                         ),
                       ),
