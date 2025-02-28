@@ -65,7 +65,7 @@ class _WriteScreenState extends State<WriteScreen> {
                   margin: EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/letter_paper.png'),
+                      image: AssetImage('assets/images/paper.png'),
                       fit: BoxFit.fill,
                     ),
                     borderRadius: BorderRadius.circular(12),

@@ -47,7 +47,10 @@ flutter:
       - images/Home_image.png
       - images/Writing_image.png
       - Throw_bottle.gif
+      - Throw_reply.gif
       - images/bottle.png
+      - images/paper.png
+      - images/paper1.png
       - images/comment.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

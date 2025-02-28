@@ -48,28 +48,28 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
               Expanded(
                 child: Container(
                   margin: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
+                    decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/letter_paper.png'),
+                      image: AssetImage(_isFirstMessage ? 'assets/images/paper.png' : 'assets/images/paper1.png'),
                       fit: BoxFit.fill,
                     ),
                     borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
+                    ),
+                    child: Column(
                     children: [
                       // 상단 메시지
                       Container(
-                        margin: EdgeInsets.fromLTRB(16, 16, 16, 8),
-                        padding: EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: Color(0xBFA0622E),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              _isFirstMessage ? '펭글이 편지' : '곰둥이장님 편지',
+                      margin: EdgeInsets.fromLTRB(16, 16, 16, 8),
+                      padding: EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Color(0xBFA0622E),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                        Text(
+                          _isFirstMessage ? '펭글이 편지' : '곰둥이장님 편지',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 14,
