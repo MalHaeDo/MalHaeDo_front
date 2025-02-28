@@ -45,8 +45,8 @@ flutter:
       - assets/images/Onboarding_image_6.png
       - assets/images/Home_image.png
       - assets/images/Writing_image.png
-      - assets/Throw_bottle.gif
-      - assets/Throw_reply.gif
+      - assets/images/Throw_bottle.gif
+      - assets/images/Throw_reply.gif
       - assets/images/bottle.png
       - assets/images/paper.png
       - assets/images/paper1.png
