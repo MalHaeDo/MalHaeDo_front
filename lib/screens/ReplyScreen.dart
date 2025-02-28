@@ -136,7 +136,7 @@ class _ReplyScreenState extends State<ReplyScreen> {
                       ),
                       SizedBox(height: 30),
                       Image.asset(
-                        'assets/images/bottle.png',
+                        'assets/images/full_bottle.png',
                         width: 60,
                         height: 60,
                       ),
@@ -146,6 +146,7 @@ class _ReplyScreenState extends State<ReplyScreen> {
                           Navigator.of(context).pushNamed('/replyAnimation');
                         },
                         style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xB0815E),
                           iconColor: Color(0xBFA0622E),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
