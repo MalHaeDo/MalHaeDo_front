@@ -57,7 +57,7 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 12),
                           decoration: BoxDecoration(
-                            color: _isFirstMessage ? Color(0xFFFFD54F) : Color(0xFFFFD54F).withOpacity(0.3),
+                            color: _isFirstMessage ? Color(0xFFFFD54F) : Colors.grey,
                             borderRadius: BorderRadius.circular(30),
                           ),
                           child: Center(
@@ -83,7 +83,7 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 12),
                           decoration: BoxDecoration(
-                            color: !_isFirstMessage ? Color(0xFFFFD54F) : Color(0xFFFFD54F).withOpacity(0.3),
+                            color: !_isFirstMessage ? Colors.brown : Colors.grey,
                             borderRadius: BorderRadius.circular(30),
                           ),
                           child: Center(
@@ -107,8 +107,10 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
                 child: Container(
                   margin: EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Color(0xFFFFF9C4), // 연한 노란색 배경
-                    borderRadius: BorderRadius.circular(20),
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/paper.png'),
+                      fit: BoxFit.cover,
+                    ),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black12,
