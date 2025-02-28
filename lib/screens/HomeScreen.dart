@@ -28,27 +28,24 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                    // 상단 좌측 빈 공간
-                    SizedBox(width: 40),
-                    
                     // 중앙 로켓과 카운트
                     Row(
                       children: [
                       Image.asset(
-                        'assets/images/bottle.png',
-                        width: 20,
-                        height: 20,
+                      'assets/images/bottle.png',
+                      width: 20,
+                      height: 20,
                       ),
-                      SizedBox(width: 5),
+                      SizedBox(width: 20),
                       Text(
-                        '2개',
-                        style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        ),
+                      '2개',
+                      style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      ),
                       ),
                       ],
                     ),

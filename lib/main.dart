@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: "/reply",
+      initialRoute: "/Onboarding",
       routes: {
         '/Onboarding': (context) => FixedBackgroundProgressView(),
         '/home': (context) => HomeScreen(),
