@@ -9,11 +9,13 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
   final int _totalPages = 6;
   int _currentPage = 0;
   double _progress = 0.0;
+  String _name = '';
+  String _islandName = '';
 
   final List<Map<String, String>> _promptData = [
     {
       'title': '곰둥 이장님',
-      'content': '안녕 오시게, 난 평안해를 주름잡는 말해도의 이장, 곰둥이라네.\n자네의 이름은 어떻게 되는가 뚜벅?',
+      'content': '안녕 어서오시게, 난 평안해를 주름잡는 말해도의 이장, 곰둥이라네.\n자네의 이름은 어떻게 되는가 뚜벅?',
     },
     {
       'title': '곰둥 이장님',
@@ -25,11 +27,11 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
     },
     {
       'title': '곰둥 이장님',
-      'content': '답문을 바라지 않으면 조약돌을 넣어보시게.\n그럼 바다 끝까지 가라앉아 아무도 발견하지\n못하지 뚜벅~',
+      'content': '답문을 바라지 않으면 조약돌을 넣어보시게.\n그럼 바다 끝까지 가라앉아 아무도 발견하지 못하지 뚜벅~',
     },
     {
       'title': '곰둥 이장님',
-      'content': '아 참!\n웅이 그렇듯이 가끔 우리 섬 주민들도 유리병을\n날린다네 뚜벅, 답문을 해줘도 되고 모른척해도 된다네 뚜벅~',
+      'content': '아 참!\n웅이 그렇듯이 가끔 우리 섬 주민들도 유리병을 날린다네 뚜벅, 답문을 해줘도 되고 모른척해도 된다네 뚜벅~',
     },
     {
       'title': '곰둥 이장님',
@@ -93,11 +95,16 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
             left: 20,
             right: 20,
             child: Container(
-              padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
+              height: 5, // 진행 바 높이 설정
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(2),
+              ),
               child: FractionallySizedBox(
                 alignment: Alignment.centerLeft,
                 widthFactor: _progress,
                 child: Container(
+                  height: 5,
                   decoration: BoxDecoration(
                     color: Colors.blue,
                     borderRadius: BorderRadius.circular(2),
@@ -115,10 +122,13 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.8),
                 borderRadius: BorderRadius.circular(20),
-              ),
-              constraints: BoxConstraints(
-                maxWidth: 1000,
-                maxHeight: double.infinity,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10,
+                    offset: Offset(0, 4),
+                  ),
+                ],
               ),
               child: Column(
                 children: [
@@ -134,22 +144,22 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
                     ),
                   ),
                   SizedBox(height: 15),
-                  if (_currentPage == 0)
+                  if (_currentPage == 1)
                     TextField(
                       onChanged: (value) {
                         setState(() {
-                          _promptData[_currentPage]['content'] = '안녕 오시게, 난 평안해를 주름잡는 말해도의 이장, 곰둥이라네.\n자네의 이름은 어떻게 되는가 뚜벅?';
+                          _name = value;
                         });
                       },
                       decoration: InputDecoration(
                         hintText: '내 이름은 (최대 5글자)',
                       ),
                     )
-                  else if (_currentPage == 1)
+                  else if (_currentPage == 2)
                     TextField(
                       onChanged: (value) {
                         setState(() {
-                          _promptData[_currentPage]['content'] = '웅..멋진 이름이로군 이 곳은 온전히 자네만 있는 섬, $value 도라네 뚜벅~';
+                          _islandName = value;
                         });
                       },
                       decoration: InputDecoration(
@@ -158,7 +168,11 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
                     )
                   else
                     Text(
-                      _promptData[_currentPage]['content']!,
+                      _currentPage == 1
+                          ? '안녕 어서오시게, 난 평안해를 주름잡는 말해도의 이장, 곰둥이라네.\n자네의 이름은 어떻게 되는가 뚜벅?'
+                          : (_currentPage == 2
+                              ? '$_name..멋진 이름이로군 이 곳은 온전히 자네만 있는 섬, $_islandName 도라네 뚜벅~'
+                              : _promptData[_currentPage]['content']!),
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 15),
                     ),
