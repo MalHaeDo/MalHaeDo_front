@@ -13,7 +13,7 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
   String _islandName = '';
 
   final List<Map<String, String>> _promptData = [
-    {
+        {
       'title': '곰둥 이장님',
       'content': '안녕 어서오시게, 난 평안해를 주름잡는 말해도의 이장, 곰둥이라네.\n자네의 이름은 어떻게 되는가 뚜벅?',
     },
@@ -40,12 +40,7 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
   ];
 
   final List<String> _buttonData = [
-    '라고 해!',
-    '라고 해!',
-    '답문을 바라지 않으면?',
-    '답문을 바라지 않으면?',
-    '도움이 된다면 언제든지!',
-    '좋아 그럼 또 보자!',
+    '라고 해!', '라고 해!', '답문을 바라지 않으면?', '답문을 바라지 않으면?', '도움이 된다면 언제든지!', '좋아 그럼 또 보자!'
   ];
 
   void _goToNextPage() {
@@ -91,26 +86,13 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
             ),
           ),
           Positioned(
-            bottom: 0,
+            top: 100,
             left: 20,
             right: 20,
-            child: Container(
-              height: 5, // 진행 바 높이 설정
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(2),
-              ),
-              child: FractionallySizedBox(
-                alignment: Alignment.centerLeft,
-                widthFactor: _progress,
-                child: Container(
-                  height: 5,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-              ),
+            child: LinearProgressIndicator(
+              value: _progress,
+              backgroundColor: Colors.grey[300],
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
             ),
           ),
           Positioned(
@@ -122,61 +104,41 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.8),
                 borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 10,
-                    offset: Offset(0, 4),
-                  ),
-                ],
+                boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 10, offset: Offset(0, 4))],
               ),
               child: Column(
                 children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Color(0xBF8D5A34),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      _promptData[_currentPage]['title']!,
-                      style: TextStyle(color: Colors.white),
-                    ),
+                  Text(
+                    _promptData[_currentPage]['title']!,
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 15),
-                  if (_currentPage == 1)
+                  if (_currentPage == 1 || _currentPage == 2) ...[
+                    Text(_promptData[_currentPage]['content']!, textAlign: TextAlign.center),
+                    SizedBox(height: 10),
                     TextField(
                       onChanged: (value) {
                         setState(() {
-                          _name = value;
+                          if (_currentPage == 1) {
+                            _name = value;
+                          } else {
+                            _islandName = value;
+                          }
                         });
                       },
                       decoration: InputDecoration(
-                        hintText: '내 이름은 (최대 5글자)',
+                        hintText: _currentPage == 0 ? '내 이름은 (최대 5글자)' : '섬 이름은 (최대 5글자)',
+                        border: OutlineInputBorder(),
                       ),
-                    )
-                  else if (_currentPage == 2)
-                    TextField(
-                      onChanged: (value) {
-                        setState(() {
-                          _islandName = value;
-                        });
-                      },
-                      decoration: InputDecoration(
-                        hintText: '(최대 5글자)',
-                      ),
-                    )
-                  else
+                    ),
+                  ] else
                     Text(
-                      _currentPage == 1
-                          ? '안녕 어서오시게, 난 평안해를 주름잡는 말해도의 이장, 곰둥이라네.\n자네의 이름은 어떻게 되는가 뚜벅?'
-                          : (_currentPage == 2
-                              ? '$_name..멋진 이름이로군 이 곳은 온전히 자네만 있는 섬, $_islandName 도라네 뚜벅~'
-                              : _promptData[_currentPage]['content']!),
+                      _currentPage == 2
+                          ? '$_name..멋진 이름이로군 이 곳은 온전히 자네만 있는 섬, $_islandName 도라네 뚜벅~'
+                          : _promptData[_currentPage]['content']!,
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 15),
                     ),
-                  SizedBox(height: 15),
                 ],
               ),
             ),
@@ -190,9 +152,7 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xBF8D5A34),
                 foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 padding: EdgeInsets.symmetric(vertical: 16),
               ),
               child: Text(
