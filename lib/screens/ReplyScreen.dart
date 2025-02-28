@@ -50,30 +50,62 @@ class _ReplyScreenState extends State<ReplyScreen> {
           
           // 하단 병 버튼
           Positioned(
-            bottom: 50,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: GestureDetector(
-                onTap: () {},
-                child: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.brown.withOpacity(0.3),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: Image.asset(
-                      'assets/images/bottle.png',
-                      width: 30,
-                      height: 30,
+              bottom: 80,
+              left: 0,
+              right: 0,
+              child: Column(
+                children: [
+                  // 메시지 말풍선
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: Color(0xBFA0622E),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      '답장이 도착했네!',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
-                ),
+                  
+                  SizedBox(height: 20),
+                  
+                  // 병 모양 버튼
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/write');
+                    },
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: Color(0xDDDCC8B8),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: Image.asset(
+                          'assets/images/bottle.png', // 병 아이콘 이미지 (없으면 아이콘으로 대체)
+                          width: 30,
+                          height: 30,
+                          // 이미지가 없는 경우 아래 child 대신 사용
+                          errorBuilder: (context, error, stackTrace) {
+                            return Icon(
+                              Icons.wine_bar,
+                              color: Colors.white,
+                              size: 30,
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
+   
           
           // 노란색 알림 (구름 위)
           Positioned(
