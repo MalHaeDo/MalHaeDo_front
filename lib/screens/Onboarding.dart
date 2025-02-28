@@ -13,13 +13,13 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
   String _islandName = '';
 
   final List<Map<String, String>> _promptData = [
-        {
+    {
       'title': '곰둥 이장님',
       'content': '안녕 어서오시게, 난 평안해를 주름잡는 말해도의 이장, 곰둥이라네.\n자네의 이름은 어떻게 되는가 뚜벅?',
     },
     {
       'title': '곰둥 이장님',
-      'content': '웅..멋진 이름이로군 이 곳은 온전히 자네만 있는 섬, __도라네 뚜벅~',
+      'content': '{name}..멋진 이름이로군 이 곳은 온전히 자네만 있는 섬, {islandName} 도라네 뚜벅~',
     },
     {
       'title': '곰둥 이장님',
@@ -108,18 +108,30 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
               ),
               child: Column(
                 children: [
-                  Text(
-                    _promptData[_currentPage]['title']!,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Color(0xBF8D5A34),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      _promptData[_currentPage]['title']!,
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
                   ),
                   SizedBox(height: 15),
-                  if (_currentPage == 1 || _currentPage == 2) ...[
-                    Text(_promptData[_currentPage]['content']!, textAlign: TextAlign.center),
+                  if (_currentPage == 0 || _currentPage == 1) ...[
+                    Text(
+                      _promptData[_currentPage]['content']!
+                          .replaceAll('{name}', _name)
+                          .replaceAll('{islandName}', _islandName),
+                      textAlign: TextAlign.center,
+                    ),
                     SizedBox(height: 10),
                     TextField(
                       onChanged: (value) {
                         setState(() {
-                          if (_currentPage == 1) {
+                          if (_currentPage == 0) {
                             _name = value;
                           } else {
                             _islandName = value;
@@ -127,15 +139,13 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
                         });
                       },
                       decoration: InputDecoration(
-                        hintText: _currentPage == 0 ? '내 이름은 (최대 5글자)' : '섬 이름은 (최대 5글자)',
+                        hintText: _currentPage == 1 ? '섬 이름은 (최대 5글자)' : '내 이름은 (최대 5글자)',
                         border: OutlineInputBorder(),
                       ),
                     ),
                   ] else
                     Text(
-                      _currentPage == 2
-                          ? '$_name..멋진 이름이로군 이 곳은 온전히 자네만 있는 섬, $_islandName 도라네 뚜벅~'
-                          : _promptData[_currentPage]['content']!,
+                      _promptData[_currentPage]['content']!,
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 15),
                     ),
@@ -148,7 +158,7 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
             left: 24,
             right: 24,
             child: ElevatedButton(
-              onPressed: _goToNextPage,
+              onPressed: (_currentPage == 0 && _name.isEmpty) || (_currentPage == 1 && _islandName.isEmpty) ? null : _goToNextPage,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xBF8D5A34),
                 foregroundColor: Colors.white,
