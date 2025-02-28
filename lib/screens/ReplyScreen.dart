@@ -63,7 +63,7 @@ class _ReplyScreenState extends State<ReplyScreen> {
                       SizedBox(height: 30),
                       ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamed('/reply-detail');
+                        Navigator.of(context).pushNamed('/replyAnimation');
                       },
                       child: Text('답장 확인하기'),
                       ),
