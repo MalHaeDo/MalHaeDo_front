@@ -29,38 +29,30 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                    children: [
                     // 상단 좌측 빈 공간
                     SizedBox(width: 40),
                     
                     // 중앙 로켓과 카운트
                     Row(
                       children: [
-                        Icon(
-                          Icons.rocket,
-                          color: Colors.white,
-                          size: 24,
+                      Image.asset(
+                        'assets/images/bottle.png',
+                        width: 20,
+                        height: 20,
+                      ),
+                      SizedBox(width: 5),
+                      Text(
+                        '2개',
+                        style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                         ),
-                        SizedBox(width: 5),
-                        Text(
-                          '2개',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
+                      ),
                       ],
                     ),
-                    // 상단 우측 프로필 아이콘
-                    CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: 18,
-                      child: Icon(
-                        Icons.person,
-                        color: Colors.blue,
-                      ),
-                    ),
+          //마이페이지 삭제
                   ],
                 ),
               ),
@@ -81,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      _showMessage ? '답장이 도착했네!' : '힘껏 날려보시게!',
+                      _showMessage ? '답장이 도착했네!' : '힘껏 날려보시게',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -93,18 +85,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   
                   // 병 모양 버튼
                   GestureDetector(
-                    onTap: () {
-                      if (_showMessage) {
-                        Navigator.pushNamed(context, '/animation').then((_) {
-                          Navigator.pushNamed(context, '/reply');
+                    onTap: () async {
+                      final result = await Navigator.pushNamed(context, '/write');
+                      if (result == true) {
+                        setState(() {
+                          _showMessage = true;
                         });
-                      } else {
-                        Navigator.pushNamed(context, '/write').then((result) {
-                          if (result == true) {
-                            setState(() {
-                              _showMessage = true;
-                            });
-                          }
+                        Navigator.pushNamed(context, '/animation').then((_) {
+                          // Handle any post-animation logic here
                         });
                       }
                     },

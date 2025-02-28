@@ -49,6 +49,7 @@ flutter:
       - assets/images/Throw_reply.gif
       - assets/images/bottle.png
       - assets/images/paper.png
+      - assets/images/full_bottle.png
       - assets/images/paper1.png
       - assets/images/comment.png
 

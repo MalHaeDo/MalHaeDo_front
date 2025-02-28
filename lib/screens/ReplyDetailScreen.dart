@@ -6,8 +6,8 @@ class ReplyDetailScreen extends StatefulWidget {
 }
 
 class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
-  final String _replyMessage1 = "안녕하세요! 저는 가상의 인물입니다. 당신의 메시지를 잘 받았습니다. 오늘도 좋은 하루 보내세요!";
-  final String _replyMessage2 = "안녕하세요! 저는 곰둥이장님입니다. 당신의 메시지를 잘 받았습니다. 좋은 하루 되세요!";
+  final String _replyMessage1 = "에구, 많이 속상했겠다 헤헷, 나도 비슷한 기분을 느낀 적이 있어. 우리 집에서도 형만 예뻐하는 것 같아서 한동안 마음이 꽁꽁 얼어붙었거든, '나는 왜 이렇게 투명인간 같지? 싶었어. 아무리 노력해도 인정받지 못하는 것 같아서 너무 서러웠지 헤헷.";
+  final String _replyMessage2 = "에구, 많이 속상했겠다 헤헷, 나도 비슷한 기분을 느낀 적이 있어. 우리 집에서도 형만 예뻐하는 것 같아서 한동안 마음이 꽁꽁 얼어붙었거든, '나는 왜 이렇게 투명인간 같지? 싶었어. 아무리 노력해도 인정받지 못하는 것 같아서 너무 서러웠지 헤헷.";
   bool _isFirstMessage = true;
 
   @override
@@ -16,7 +16,7 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/Write_image.png'),
+            image: AssetImage('assets/images/Writing_image.png'),
             fit: BoxFit.cover,
           ),
         ),
@@ -108,39 +108,41 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                    children: [
                     ElevatedButton(
                       onPressed: () => Navigator.pop(context),
                       child: Text(
-                        '버리기',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      '버리기',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white, // 글자색상 변경
+                      ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xBFA0622E),
-                        padding: EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                      backgroundColor: Color(0xBFA0622E),
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                       ),
                     ),
                     ElevatedButton(
                       onPressed: () => Navigator.pop(context),
                       child: Text(
-                        '보관하기',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      '보관하기',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white, // 글자색상 변경
+                      ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xBFA0622E),
-                        padding: EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                      backgroundColor: Color(0xBFA0622E),
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                       ),
                     ),
                   ],
