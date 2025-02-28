@@ -6,7 +6,7 @@ class FixedBackgroundProgressView extends StatefulWidget {
 }
 
 class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressView> {
-  final int _totalPages = 5;
+  final int _totalPages = 6;
   int _currentPage = 0;
   double _progress = 0.0;
 
@@ -89,15 +89,11 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
             ),
           ),
           Positioned(
-            top: 60,
-            left: 60,
-            right: 16,
+            bottom: 0,
+            left: 20,
+            right: 20,
             child: Container(
-              height: 4,
-              decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(2),
-              ),
+              padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
               child: FractionallySizedBox(
                 alignment: Alignment.centerLeft,
                 widthFactor: _progress,
@@ -111,9 +107,9 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
             ),
           ),
           Positioned(
-            bottom: 100,
-            left: 24,
-            right: 24,
+            bottom: 150,
+            left: 10,
+            right: 10,
             child: Container(
               padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -124,6 +120,7 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
               ),
               constraints: BoxConstraints(
                 maxWidth: 1000,
+                maxHeight: double.infinity,
               ),
               child: Column(
                 children: [
