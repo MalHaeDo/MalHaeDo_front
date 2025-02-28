@@ -1,19 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:malhaeboredo/screens/Onboarding.dart';
+import 'package:malhaeboredo/screens/HomeScreen.dart';
+import 'package:malhaeboredo/screens/WriteScreen.dart';
+import 'package:malhaeboredo/screens/BottleAnimationScreen.dart';
+import 'package:malhaeboredo/screens/ReplyScreen.dart';
+import 'package:malhaeboredo/screens/ReplyDetailScreen.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.blue,
       ),
+      initialRoute: "/Onboarding",
+      routes: {
+        '/Onboarding': (context) => FixedBackgroundProgressView(),
+        '/home': (context) => HomeScreen(),
+        '/write': (context) => WriteScreen(),
+        '/animation' : (context) => BottleAnimationScreen(),
+        '/reply' : (context) => ReplyScreen(),
+        '/replyDetail' : (context) => ReplyDetailScreen(),
+      },
     );
   }
 }
