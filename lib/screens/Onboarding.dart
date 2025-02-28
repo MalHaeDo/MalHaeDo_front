@@ -113,10 +113,8 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
             child: Container(
               padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/comment.png'),
-                  fit: BoxFit.contain,
-                ),
+                color: Colors.white.withOpacity(0.8),
+                borderRadius: BorderRadius.circular(20),
               ),
               constraints: BoxConstraints(
                 maxWidth: 1000,
