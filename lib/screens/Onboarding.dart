@@ -132,8 +132,11 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
                       onChanged: (value) {
                         setState(() {
                           if (_currentPage == 0) {
+                            //네임이랑 섬 이름이랑 5글자로 넣어서 처리
+                            _name.length < 5 ? _name = value : _name = value.substring(0, 5);
                             _name = value;
                           } else {
+                            'islandName'.length < 5 ? _islandName = value : _islandName = value.substring(0, 5);
                             _islandName = value;
                           }
                         });

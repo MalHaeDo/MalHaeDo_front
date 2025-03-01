@@ -205,7 +205,7 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
                             children: [
                               Expanded(
                                 child: ElevatedButton(
-                                  onPressed: () => Navigator.pushNamed(context, '/home'),
+                                  onPressed: () => Navigator.pushNamed(context, '/bottleLeft'),
                                   child: Text(
                                     '버리기',
                                     style: TextStyle(

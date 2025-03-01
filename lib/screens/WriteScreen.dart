@@ -52,7 +52,6 @@ void _clearMessage() async {
               _buildHeader(context),
               _buildMessageCard(),
               _buildLetterContainer(),
-              _buildBottomButton(context),
             ],
           ),
         ),
@@ -182,73 +181,40 @@ void _clearMessage() async {
           Row(
             children: [
               Icon(
-              Icons.check_circle_outline,
+                Icons.check_circle_outline,
                 color: _sendButtonActive ? Colors.brown : Colors.grey,
-              size: 20,
+                size: 20,
               ),
               SizedBox(width: 4),
-              ElevatedButton(
-              onPressed: _sendButtonActive
-                ? () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                    return AlertDialog(
-                      backgroundColor: Color(0xBFA0622E),
-                      title: Text(
-                      '메시지를 바다에 흘려보낼까요?',
-                      style: TextStyle(color: Colors.white),
-                      ),
-                      actions: [
-                      TextButton(
-                        child: Text(
-                        '취소',
-                        style: TextStyle(color: Colors.white70),
-                        ),
-                        onPressed: () {
-                        Navigator.of(context).pop();
-                        },
-                      ),
-                      TextButton(
-                        child: Text(
-                        '흘려보내기',
-                        style: TextStyle(color: Colors.white),
-                        ),
-                        onPressed: () {
-                        _saveMessage();
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pop(true);
-                        setState(() {
-                          _sendButtonActive = false;
-                        });
-                        },
-                      ),
-                      ],
-                    );
-                    },
-                  );
-                  }
-                : null,
-              child: Text(
+              Text(
                 '흘려보내기',
                 style: TextStyle(
-                color: _sendButtonActive ? Colors.brown : Colors.grey,
-                fontSize: 14,
+                  color: _sendButtonActive ? Colors.brown : Colors.grey,
+                  fontSize: 14,
                 ),
-              ),
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              ),
               ),
             ],
           ),
           Spacer(),
-          Text(
-            '${_textController.text.length}/1000',
-            style: TextStyle(
-              color: Colors.grey,
-              fontSize: 14,
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                '${_textController.text.length}/1000',
+                style: TextStyle(
+                  color: _textController.text.length > 900 ? Colors.red : Colors.grey,
+                  fontSize: 14,
+                ),
+              ),
+              if (_textController.text.length > 900)
+                Text(
+                  '최대 1000자까지 입력할 수 있습니다.',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 14,
+                  ),
+                ),
+            ],
           ),
         ],
       ),
@@ -270,68 +236,5 @@ void _clearMessage() async {
       ),
     );
   }
-
-  Widget _buildBottomButton(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: ElevatedButton(
-        onPressed: _sendButtonActive
-            ? () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      backgroundColor: Color(0xBFA0622E),
-                      title: Text(
-                        '메시지를 바다에 흘려보낼까요?',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      actions: [
-                        TextButton(
-                          child: Text(
-                            '취소',
-                            style: TextStyle(color: Colors.white70),
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        TextButton(
-                          child: Text(
-                            '흘려보내기',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            Navigator.of(context).pop(true);
-                            setState(() {
-                              _sendButtonActive = false;
-                            });
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              }
-            : null,
-        child: Text(
-          '흘려보내기',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: _sendButtonActive ? Color(0xBFA0622E) : Colors.grey,
-          padding: EdgeInsets.symmetric(vertical: 12),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ),
-      ),
-    );
-  }
 }
+  
