@@ -116,7 +116,7 @@ class _WriteScreenState extends State<WriteScreen> {
                 // Yes button
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () => Navigator.pushNamed(context, '/home'),
+                    onPressed: () => Navigator.of(context).pop(true),
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: 12),
                       backgroundColor: Color(0xFFA0622E),
@@ -252,38 +252,54 @@ class _WriteScreenState extends State<WriteScreen> {
       child: Container(
         margin: EdgeInsets.all(16),
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/paper.png'),
-            fit: BoxFit.fill,
-          ),
           borderRadius: BorderRadius.circular(12),
         ),
-        child: Column(
+        child: Stack(
           children: [
-            _buildTextInput(),
-            _buildFooter(),
-            _buildBottleIcon(),
+            // Fixed background paper
+            Positioned.fill(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.asset(
+                  'assets/images/paper.png',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            // Letter content with separate scrolling
+            Column(
+              children: [
+                _buildScrollableTextInput(),
+                _buildFooter(),
+                _buildBottleIcon(),
+              ],
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildTextInput() {
+  Widget _buildScrollableTextInput() {
     return Expanded(
       child: Container(
         padding: EdgeInsets.all(16),
-        child: TextField(
-          controller: _textController,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: '',
-            contentPadding: EdgeInsets.zero,
-          ),
-          style: TextStyle(
-            fontSize: 16,
-            height: 1.8,
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: TextField(
+            controller: _textController,
+            maxLines: null,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: '',
+              contentPadding: EdgeInsets.zero,
+            ),
+            style: TextStyle(
+              fontSize: 16,
+              height: 1.8,
+            ),
+            keyboardType: TextInputType.multiline,
+            textInputAction: TextInputAction.newline,
           ),
         ),
       ),
@@ -291,7 +307,8 @@ class _WriteScreenState extends State<WriteScreen> {
   }
 
   Widget _buildFooter() {
-    return Padding(
+    return Container(
+      color: Colors.transparent,
       padding: const EdgeInsets.all(16.0),
       child: Row(
         children: [
