@@ -270,6 +270,8 @@ class _WriteScreenState extends State<WriteScreen> {
     );
   }
 
+  //15자 이상 작성했을 때 그레이 색상이 진해지고, 체크했을 때 활성화
+
   Widget _buildLetterContainer() {
     return Expanded(
       child: Container(
@@ -379,6 +381,7 @@ class _WriteScreenState extends State<WriteScreen> {
               if (_textController.text.length > 900)
                 Text(
                   '최대 1000자까지 입력할 수 있습니다.',
+                  //1000자 초과하면 막는 로직
                   style: TextStyle(
                     color: Colors.red,
                     fontSize: 14,
