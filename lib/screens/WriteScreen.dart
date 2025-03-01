@@ -178,23 +178,33 @@ void _clearMessage() async {
       padding: const EdgeInsets.all(16.0),
       child: Row(
         children: [
-          Row(
-            children: [
+            GestureDetector(
+            onTap: _sendButtonActive ? _saveMessage : null,
+            child: Row(
+              children: [
               Icon(
                 Icons.check_circle_outline,
                 color: _sendButtonActive ? Colors.brown : Colors.grey,
                 size: 20,
               ),
               SizedBox(width: 4),
-              Text(
+                Text(
                 '흘려보내기',
                 style: TextStyle(
                   color: _sendButtonActive ? Colors.brown : Colors.grey,
                   fontSize: 14,
                 ),
-              ),
-            ],
-          ),
+                ),
+                if (_sendButtonActive)
+                IconButton(
+                  icon: Icon(Icons.arrow_forward, color: Colors.brown),
+                  onPressed: () {
+                  Navigator.pushNamed(context, '/animation');
+                  },
+                ),
+              ],
+            ),
+            ),
           Spacer(),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
