@@ -20,6 +20,27 @@ class _WriteScreenState extends State<WriteScreen> {
     });
   }
 
+  final List<String> _messages = [
+    '지금 느끼는 감정을 판단하거나 억제하려 하지 말고, 내가 이런 감정을 느끼고 있구나라고 인정해보시게',
+    '거울을 보며 자신의 표정과 모습을 관찰하고, 그 안에서 떠오르는 감정을 인정하며 수용해보시게',
+    '내 감정을 친구에게 설명하듯이 글로 써보며, 스스로를 공감하고 위로하는 연습을 해보시게',
+    '평소 자주 느끼는 감정이나 반복되는 상황을 적어보고 그 이유를 탐구해보시게',
+    '내가 자주 사용하는 감정 표현(좋다, 싫다 등)을 구체적인 단어로 바꿔보시게',
+    '지금의 감정에서 배우거나 얻을 수 있는 교훈이나 긍정적인 점을 적어보시게',
+    '감정을 느낀 상황에서 통제할 수 있는 부분과 없는 부분을 구분해 적어보시게',
+    '감정을 숨기거나 피하려 하지 말고 그 감정이 내 몸에 어떤 영향을 주는지 관찰하고 적어보시게',
+    '지금 느끼는 감정을 한 단어로 표현해보고, 그 감정을 느낀 이유를 구체적으로 적어보시게',
+  ];
+
+
+  String _currentMessage = '지금 느끼는 감정을 판단하거나 억제하려 하지 말고, 내가 이런 감정을 느끼고 있구나라고 인정해보시게';
+
+  void _refreshMessage() {
+    setState(() {
+      _currentMessage = (_messages..shuffle()).first;
+    });
+  }
+
   @override
   void dispose() {
     _textController.dispose();
@@ -229,14 +250,16 @@ class _WriteScreenState extends State<WriteScreen> {
                   ),
                 ),
                 Spacer(),
-                Icon(Icons.refresh, color: Colors.white, size: 20),
-              ],
-            ),
-            SizedBox(height: 10),
-            Text(
-              '지금 느끼는 감정을 판단하거나 억제하려 하지 말고,\n'
-              '내가 이런 감정을 느끼고 있구나 라고 인정해보시게.',
-              style: TextStyle(
+                IconButton(
+                  icon: Icon(Icons.refresh, color: Colors.white, size: 20),
+                  onPressed: _refreshMessage,
+                ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Text(
+                _currentMessage,
+                style: TextStyle(
                 color: Colors.brown,
                 fontSize: 14,
               ),
