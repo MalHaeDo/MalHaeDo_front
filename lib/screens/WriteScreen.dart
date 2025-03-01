@@ -341,7 +341,7 @@ class _WriteScreenState extends State<WriteScreen> {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: _sendButtonActive ? Color(0xFFA0622E).withOpacity(0.1) : Colors.transparent,
+                color: Colors.transparent,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
