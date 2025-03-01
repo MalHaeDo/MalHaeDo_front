@@ -338,12 +338,6 @@ class _WriteScreenState extends State<WriteScreen> {
                     ),
                   ),
                   SizedBox(width: 4),
-                  if (_sendButtonActive)
-                    Icon(
-                      Icons.arrow_forward,
-                      color: Colors.brown,
-                      size: 16,
-                    ),
                 ],
               ),
             ),

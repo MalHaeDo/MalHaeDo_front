@@ -21,9 +21,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: "/Onboarding",
+      initialRoute: "/home",
       routes: {
-        '/Onboarding': (context) => FixedBackgroundProgressView(),
+        //'/Onboarding': (context) => FixedBackgroundProgressView(),
         '/home': (context) => HomeScreen(),
         '/write': (context) => WriteScreen(),
         '/animation' : (context) => BottleAnimationScreen(),
