@@ -94,14 +94,14 @@ class _WriteScreenState extends State<WriteScreen> {
             Container(
               margin: EdgeInsets.symmetric(vertical: 20),
               child: Image.asset(
-                'assets/images/bottle.png',
+                'assets/images/full_bottle.png',
                 width: 60,
                 height: 60,
               ),
             ),
             // Confirmation text
             Text(
-              '작성중인 편지를 삭제하면\n다 시작하는데 괜찮을까?',
+              '작성중인 편지를 삭제하면\n다 사라지는데 괜찮을까?',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,
