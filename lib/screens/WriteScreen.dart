@@ -116,7 +116,7 @@ class _WriteScreenState extends State<WriteScreen> {
                 // Yes button
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(true),
+                    onPressed: () => Navigator.pushNamed(context, '/home'),
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: 12),
                       backgroundColor: Color(0xFFA0622E),
