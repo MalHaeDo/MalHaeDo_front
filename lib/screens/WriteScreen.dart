@@ -40,13 +40,28 @@ class _WriteScreenState extends State<WriteScreen> {
     '지금 느끼는 감정을 한 단어로 표현해보고, 그 감정을 느낀 이유를 구체적으로 적어보시게 \n화남. 친구가 약속을 어겼고, 나를 존중하지 않는 것 같아서 기분이 나쁘다.',
   ];
 
-  String _currentMessage = '지금 느끼는 감정을 판단하거나 억제하려 하지 말고, 내가 이런 감정을 느끼고 있구나라고 인정해보시게 \n나는 지금 슬픔을 느끼고 있구나.';
+  String _currentMessage = '지금 느끼는 감정을 판단하거나 억제하려 하지 말고, 내가 이런 감정을 느끼고 있구나라고 인정해보시게';
 
   void _refreshMessage() {
     setState(() {
       _currentMessage = (_messages..shuffle()).first;
+      _currentPlaceholder = (_placeholder..shuffle()).first;
     });
   }
+
+  final List<String> _placeholder = [
+    '나는 지금 슬픔을 느끼고 있구나.',
+    '지금 내 표정이 피곤해 보이지만, 그 모습도 나의 일부다.',
+    '오늘 너무 속상했어. 하지만 이런 기분을 느낄 수도 있는 거니까 괜찮아.',
+    '사람 많은 곳에 가면 자꾸 불편하고 초조한 기분이 든다. 혼잡한 환경에서 에너지가 빨리 소진되는 것 같다.',
+    '좋다 → 기쁘다, 만족스럽다 / 싫다 → 짜증난다, 답답하다.',
+    '이번 실망을 통해 더 강해지고, 내 안의 내성을 키울 수 있는 기회가 된거다.',
+    '내 기분은 통제할 수 있지만 친구의 행동과 생각은 내 의지로 다스릴 수 없다.',
+    '스트레스가 느껴진다. 심장이 두근거리고, 목과 어깨가 뻐근하게 긴장된 느낌이다.',
+    '화남. 친구가 약속을 어겼고, 나를 존중하지 않는 것 같아서 기분이 나쁘다.',
+  ];
+
+  String _currentPlaceholder = '나는 지금 슬픔을 느끼고 있구나.';
 
   @override
   void dispose() {
@@ -321,7 +336,7 @@ class _WriteScreenState extends State<WriteScreen> {
             maxLines: null,
             decoration: InputDecoration(
               border: InputBorder.none,
-              hintText: '',
+              hintText: _currentPlaceholder,
               contentPadding: EdgeInsets.zero,
             ),
             style: TextStyle(
