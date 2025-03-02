@@ -4,7 +4,7 @@ class BottleAnimationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushNamed(context, '/reply');
+      Navigator.pushNamed(context, '/replyAnimation');
     });
 
     return Scaffold(

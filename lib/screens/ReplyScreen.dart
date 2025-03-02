@@ -114,7 +114,7 @@ class _ReplyScreenState extends State<ReplyScreen> {
             child: GestureDetector(
               onTap: () {
                 setState(() {
-                  _showReplyModal = true;
+                  Navigator.of(context).pushNamed('/replyDetail');
                 });
               },
               child: Container(
@@ -136,65 +136,6 @@ class _ReplyScreenState extends State<ReplyScreen> {
               ),
             ),
           ),
-          
-          // 답장 모달
-          if (_showReplyModal)
-            Container(
-              color: Colors.black.withOpacity(0.5),
-              child: Center(
-                child: Container(
-                  margin: EdgeInsets.all(20),
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '누군가가 당신의 메시지에 답장했어요',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xBFA0622E),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        '당신의 마음이 바다를 건너 누군가에게 닿았습니다. 그들이 보낸 따뜻한 응원의 메시지를 확인해보세요.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      SizedBox(height: 30),
-                      Image.asset(
-                        'assets/images/full_bottle.png',
-                        width: 60,
-                        height: 60,
-                      ),
-                      SizedBox(height: 30),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pushNamed('/replyAnimation');
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xB0815E),
-                          iconColor: Color(0xBFA0622E),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-                        ),
-                        child: Text(
-                          '답장 확인하기',
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
         ],
       ),
     );
