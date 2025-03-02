@@ -213,20 +213,20 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
         children: [
           _bottomButton('버리기', Colors.white, '/bottleLeft'),
           SizedBox(width: 16),
-          _bottomButton('보관하기', _isFirstMessage ? Color(0xFFFFD54F) : Colors.brown, '/home'),
+          _bottomButton('보관하기', _isFirstMessage ? Color(0xFFFFD54F) : Colors.brown, '/home', textColor: Colors.white),
         ],
       ),
     );
   }
 
   // 하단 버튼 생성
-  Widget _bottomButton(String text, Color color, String route) {
+  Widget _bottomButton(String text, Color color, String route, {Color textColor = Colors.black87}) {
     return Expanded(
       child: ElevatedButton(
         onPressed: () => Navigator.pushNamed(context, route),
         child: Text(
           text,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: textColor),
         ),
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
