@@ -12,6 +12,7 @@ import 'package:malhaeboredo/screens/BottleLeft.dart';
 import 'package:malhaeboredo/screens/GuestScreen.dart';
 
 void main() {
+  print('Is Web: $kIsWeb');
   runApp(const MyApp());
 }
 
