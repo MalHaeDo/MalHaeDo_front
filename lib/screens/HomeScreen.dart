@@ -48,7 +48,7 @@ void _checkSavedMessage() async {
                     Row(
                       children: [
                       Image.asset(
-                      'assets/images/bottle.png',
+                      'assets/images/full_bottle.png',
                       width: 20,
                       height: 20,
                       ),
