@@ -189,6 +189,7 @@ class _WriteScreenState extends State<WriteScreen> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         body: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
@@ -382,7 +383,6 @@ class _WriteScreenState extends State<WriteScreen> {
                 borderRadius: BorderRadius.circular(20),
               ),
               padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              backgroundColor: Colors.transparent,
             ),
           ),
           Spacer(),
