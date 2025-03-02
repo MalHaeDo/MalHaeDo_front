@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 
 class WriteScreen extends StatefulWidget {
   @override
@@ -10,18 +11,8 @@ class _WriteScreenState extends State<WriteScreen> {
   final TextEditingController _textController = TextEditingController();
   bool _sendButtonActive = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _textController.addListener(() {
-      setState(() {
-        _sendButtonActive = _textController.text.isNotEmpty;
-      });
-    });
-  }
-
   final List<String> _messages = [
-    '지금 느끼는 감정을 판단하거나 억제하려 하지 말고, 내가 이런 감정을 느끼고 있구나라고 인정해보시게',
+    '지금 느끼는 감정을 판단하거나 억제하려 하지 말고, 내가 이런 감정을 느끼고 있구나라고 인정해보시게 ',
     '거울을 보며 자신의 표정과 모습을 관찰하고, 그 안에서 떠오르는 감정을 인정하며 수용해보시게',
     '내 감정을 친구에게 설명하듯이 글로 써보며, 스스로를 공감하고 위로하는 연습을 해보시게',
     '평소 자주 느끼는 감정이나 반복되는 상황을 적어보고 그 이유를 탐구해보시게',
@@ -32,12 +23,16 @@ class _WriteScreenState extends State<WriteScreen> {
     '지금 느끼는 감정을 한 단어로 표현해보고, 그 감정을 느낀 이유를 구체적으로 적어보시게',
   ];
 
+  String _currentMessage = '';
 
-  String _currentMessage = '지금 느끼는 감정을 판단하거나 억제하려 하지 말고, 내가 이런 감정을 느끼고 있구나라고 인정해보시게';
-
-  void _refreshMessage() {
-    setState(() {
-      _currentMessage = (_messages..shuffle()).first;
+  @override
+  void initState() {
+    super.initState();
+    _currentMessage = _messages.first;
+    _textController.addListener(() {
+      setState(() {
+        _sendButtonActive = _textController.text.isNotEmpty;
+      });
     });
   }
 
@@ -47,118 +42,53 @@ class _WriteScreenState extends State<WriteScreen> {
     super.dispose();
   }
 
-  void _saveMessage() async {
+  void _refreshMessage() {
+    setState(() {
+      _messages.shuffle();
+      _currentMessage = _messages.first;
+    });
+  }
+
+  Future<void> _saveMessage() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('saved_message', _textController.text);
   }
 
-  void _clearMessage() async {
+  Future<void> _clearMessage() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('saved_message');
   }
 
-  // Navigate to animation screen with the message
   void _navigateToAnimation() {
-    if (_textController.text.isNotEmpty) {
+    if (_sendButtonActive) {
       _saveMessage();
       Navigator.pushNamed(context, '/animation');
     }
   }
 
-  // Show confirmation dialog when trying to exit
   Future<bool> _onWillPop() async {
-    if (_textController.text.isEmpty) {
-      return true; // Allow pop if no text entered
-    }
-    
-    // Show confirmation dialog
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (context) => _buildExitConfirmationDialog(context),
-    );
-    
-    return result ?? false; // Default to false if dialog is dismissed
+    if (_textController.text.isEmpty) return true;
+    return await showDialog(
+          context: context,
+          builder: _buildExitConfirmationDialog,
+        ) ??
+        false;
   }
 
   Widget _buildExitConfirmationDialog(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Message bottle image
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 20),
-              child: Image.asset(
-                'assets/images/full_bottle.png',
-                width: 60,
-                height: 60,
-              ),
-            ),
-            // Confirmation text
-            Text(
-              '작성중인 편지를 삭제하면\n다 사라지는데 괜찮을까?',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 25),
-            // Buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                // No button
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    style: OutlinedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      side: BorderSide(color: Colors.grey),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                    child: Text(
-                      '아니',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 10),
-                // Yes button
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(true),
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      backgroundColor: Color(0xFFA0622E),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                    child: Text(
-                      '괜찮아',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      title: Text('작성 중인 편지를 삭제하면 사라집니다. 괜찮을까요?'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          child: Text('아니'),
         ),
-      ),
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(true),
+          child: Text('괜찮아'),
+        ),
+      ],
     );
   }
 
@@ -167,229 +97,87 @@ class _WriteScreenState extends State<WriteScreen> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
-        body: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/Writing_image.png'),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: SafeArea(
-            child: Column(
-              children: [
-                _buildHeader(context),
-                _buildMessageCard(),
-                _buildLetterContainer(),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeader(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            '바다에 감정 털어놓기',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          IconButton(
-            icon: Icon(Icons.close, color: Colors.white),
-            onPressed: () async {
-              if (_textController.text.isEmpty) {
-                Navigator.pop(context);
-              } else {
-                final shouldPop = await _onWillPop();
-                if (shouldPop) {
+        appBar: AppBar(
+          title: Text('바다에 감정 털어놓기'),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () async {
+                if (await _onWillPop()) {
                   Navigator.pop(context);
                 }
-              }
-            },
-          ),
-        ],
+              },
+            ),
+          ],
+        ),
+        body: Column(
+          children: [
+            _buildMessageCard(),
+            _buildLetterContainer(),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildMessageCard() {
     return Card(
-      color: Color(0xBFFFFFFF),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
+      margin: EdgeInsets.all(16),
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: EdgeInsets.all(12),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.brown,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Text(
-                    '공둥 이장님',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Spacer(),
+                Text('공둥 이장님', style: TextStyle(fontWeight: FontWeight.bold)),
                 IconButton(
-                  icon: Icon(Icons.refresh, color: Colors.white, size: 20),
+                  icon: Icon(Icons.refresh),
                   onPressed: _refreshMessage,
                 ),
-                ],
-              ),
-              SizedBox(height: 10),
-              Text(
-                _currentMessage,
-                style: TextStyle(
-                color: Colors.brown,
-                fontSize: 14,
-              ),
+              ],
             ),
+            SizedBox(height: 10),
+            Text(_currentMessage),
           ],
         ),
       ),
     );
   }
-
-  //15자 이상 작성했을 때 그레이 색상이 진해지고, 체크했을 때 활성화
 
   Widget _buildLetterContainer() {
     return Expanded(
       child: Container(
         margin: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Stack(
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(border: Border.all(), borderRadius: BorderRadius.circular(12)),
+        child: Column(
           children: [
-            // Fixed background paper
-            Positioned.fill(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.asset(
-                  'assets/images/paper.png',
-                  fit: BoxFit.cover,
-                ),
+            Expanded(
+              child: TextField(
+                controller: _textController,
+                maxLines: null,
+                decoration: InputDecoration(border: InputBorder.none, hintText: '여기에 입력하세요...'),
+                keyboardType: TextInputType.multiline,
+                textInputAction: TextInputAction.newline,
+                inputFormatters: [LengthLimitingTextInputFormatter(1000)],
               ),
             ),
-            // Letter content with separate scrolling
-            Column(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildScrollableTextInput(),
-                _buildFooter(),
-                _buildBottleIcon(),
+                Text('${_textController.text.length}/1000',
+                    style: TextStyle(color: _textController.text.length > 900 ? Colors.red : Colors.grey)),
+                TextButton(
+                  onPressed: _sendButtonActive ? _navigateToAnimation : null,
+                  child: Text('흘려보내기',
+                      style: TextStyle(color: _sendButtonActive ? Colors.blue : Colors.grey)),
+                ),
               ],
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildScrollableTextInput() {
-    return Expanded(
-      child: Container(
-        padding: EdgeInsets.all(16),
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: TextField(
-            controller: _textController,
-            maxLines: null,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: '',
-              contentPadding: EdgeInsets.zero,
-            ),
-            style: TextStyle(
-              fontSize: 16,
-              height: 1.8,
-            ),
-            keyboardType: TextInputType.multiline,
-            textInputAction: TextInputAction.newline,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFooter() {
-    return Container(
-      color: Colors.transparent,
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        children: [
-          // Send button with text and icon combined
-          GestureDetector(
-            onTap: _sendButtonActive ? _navigateToAnimation : null,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.check_circle_outline,
-                    color: _sendButtonActive ? Colors.brown : Colors.grey,
-                    size: 20,
-                  ),
-                  SizedBox(width: 4),
-                  Text(
-                    '흘려보내기',
-                    style: TextStyle(
-                      color: _sendButtonActive ? Colors.brown : Colors.grey,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  SizedBox(width: 4),
-                ],
-              ),
-            ),
-          ),
-          Spacer(),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                '${_textController.text.length}/1000',
-                style: TextStyle(
-                  color: _textController.text.length > 900 ? Colors.red : Colors.grey,
-                  fontSize: 14,
-                ),
-              ),
-              if (_textController.text.length > 900)
-                Text(
-                  '최대 1000자까지 입력할 수 있습니다.',
-                  //1000자 초과하면 막는 로직
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontSize: 14,
-                  ),
-                ),
-            ],
-          ),
-        ],
       ),
     );
   }

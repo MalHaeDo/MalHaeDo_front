@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      //스플래쉬 화면 제거
       initialRoute: "/home",
       routes: {
         //'/Onboarding': (context) => FixedBackgroundProgressView(),
