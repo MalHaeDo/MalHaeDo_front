@@ -361,8 +361,7 @@ class _WriteScreenState extends State<WriteScreen> {
       padding: const EdgeInsets.all(16.0),
       child: Row(
         children: [
-          // Send button with text and icon combined
-          ElevatedButton.icon(
+          TextButton.icon(
             onPressed: _sendButtonActive ? _handleButtonClick : null,
             icon: Icon(
               Icons.check_circle_outline,
@@ -382,10 +381,10 @@ class _WriteScreenState extends State<WriteScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-                Text(
+              Text(
                 '${_textController.text.length}/1000',
                 style: TextStyle(
-                  color: _textController.text.length > 900 ? Colors.red : (_sendButtonActive ? Colors.grey : Colors.brown),
+                  color: _textController.text.length > 900 ? Colors.red : (_sendButtonActive ? Colors.brown : Colors.grey),
                   fontSize: 14,
                 ),
               ),
