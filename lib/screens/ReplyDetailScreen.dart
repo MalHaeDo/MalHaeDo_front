@@ -123,14 +123,18 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: (_isFirstMessage == isFirst) ? Color(0xFFFFD54F) : Colors.grey,
+            color: (_isFirstMessage == isFirst)
+                ? (isFirst ? Color(0xFFFFD54F) : Colors.brown)
+                : Colors.grey,
             borderRadius: BorderRadius.circular(30),
           ),
           child: Center(
             child: Text(
               text,
               style: TextStyle(
-                color: (_isFirstMessage == isFirst) ? Colors.black : Colors.white,
+                color: (_isFirstMessage == isFirst)
+                    ? Colors.black
+                    : Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -180,14 +184,6 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
-              Text(
-                '안녕 웅아!',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xBFA0622E),
-                ),
-              ),
               SizedBox(height: 10),
               Text(
                 _isFirstMessage ? _replyMessage : _replyMessage1,
