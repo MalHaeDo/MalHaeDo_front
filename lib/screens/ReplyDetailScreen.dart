@@ -213,7 +213,7 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
         children: [
           _bottomButton('버리기', Colors.white, '/bottleLeft'),
           SizedBox(width: 16),
-          _bottomButton('보관하기', Color(0xFFFFD54F), '/home'),
+          _bottomButton('보관하기', _isFirstMessage ? Color(0xFFFFD54F) : Colors.brown, '/home'),
         ],
       ),
     );
