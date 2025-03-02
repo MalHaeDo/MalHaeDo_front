@@ -133,8 +133,8 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
               text,
               style: TextStyle(
                 color: (_isFirstMessage == isFirst)
-                    ? Colors.black
-                    : Colors.white,
+                ? (isFirst ? Colors.black : Colors.white) :
+                Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
