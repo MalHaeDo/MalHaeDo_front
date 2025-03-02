@@ -11,7 +11,7 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
   final String _replyMessage =
       "\"에구, 많이 속상했겠다 헤헷, 나도 비슷한 기분을 느낀 적이 있어. 우리 집에서도 형만 예뻐하는 것 같아서 한동안 마음이 꽁꽁 얼어붙었거든. '나는 왜 이렇게 투명인간 같지?' 싶었어, 아무리 노력해도 인정받지 못하는 것 같아서 너무 서러웠지 헤헷.";
   final String _replyMessage1 =
-      "음...바다처럼 깊겠구먼...노력해도 부족한 것 같을 때, 정말 답답하고 지치는 법이지... 하지만 말이야, 너의 노력도 언젠가 흐름을 타게 될 것이야, 뚜벅. 그래서 나는 이하이의 '한숨'이 노래를 추천하네. 이 노래는 말이지, 우리가 스스로 이겨낼";
+      "\"음...바다처럼 깊겠구먼...노력해도 부족한 것 같을 때, 정말 답답하고 지치는 법이지... 하지만 말이야, 너의 노력도 언젠가 흐름을 타게 될 것이야, 뚜벅. 그래서 나는 이하이의 '한숨'이 노래를 추천하네. 이 노래는 말이지, 우리가 스스로 이겨낼";
 
   bool _isFirstMessage = true;
   String? videoUrl;
@@ -65,9 +65,9 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   children: [
-                    _messageTab("펭글이 편지", true),
-                    SizedBox(width: 10),
-                    _messageTab("곰둥이장님 편지", false),
+                  _messageTab("펭글이 편지", true),
+                  SizedBox(width: 10),
+                  _messageTab("곰둥이장님 편지", false),
                   ],
                 ),
               ),
