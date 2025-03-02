@@ -346,32 +346,27 @@ class _WriteScreenState extends State<WriteScreen> {
       child: Row(
         children: [
           // Send button with text and icon combined
-          GestureDetector(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: Colors.transparent,
+          ElevatedButton.icon(
+            onPressed: _sendButtonActive ? _handleButtonClick : null,
+            icon: Icon(
+              Icons.check_circle_outline,
+              color: Colors.white,
+              size: 20,
+            ),
+            label: Text(
+              '흘려보내기',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: _handleClick ? Colors.brown : Colors.grey,
+              shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.check_circle_outline,
-                    color: _handleClick ? Colors.brown : Colors.grey,
-                    size: 20,
-                  ),
-                  SizedBox(width: 4),
-                  Text(
-                    '흘려보내기',
-                    style: TextStyle(
-                      color: _handleClick ? Colors.brown : Colors.grey,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  SizedBox(width: 4),
-                ],
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             ),
           ),
           Spacer(),
