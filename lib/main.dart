@@ -7,6 +7,7 @@ import 'package:malhaeboredo/screens/ReplyScreen.dart';
 import 'package:malhaeboredo/screens/ReplyDetailScreen.dart';
 import 'package:malhaeboredo/screens/ReplyAnimationScreen.dart';
 import 'package:malhaeboredo/screens/BottleLeft.dart';
+import 'package:malhaeboredo/screens/GuestScreen.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -22,9 +23,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       //스플래쉬 화면 제거
-      initialRoute: "/home",
+      initialRoute: "/Guest",
       routes: {
         //'/Onboarding': (context) => FixedBackgroundProgressView(),
+        '/Guest': (context) => GuestScreen(),
         '/home': (context) => HomeScreen(),
         '/write': (context) => WriteScreen(),
         '/animation' : (context) => BottleAnimationScreen(),

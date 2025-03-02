@@ -54,6 +54,7 @@ flutter:
       - assets/images/Throw_reply.gif
       - assets/images/bottle.png
       - assets/images/penguin.svg
+      - assets/images/background_image.png
       - assets/images/Throw_away.gif
       - assets/images/paper.png
       - assets/images/Splash.png
