@@ -365,13 +365,13 @@ class _WriteScreenState extends State<WriteScreen> {
             onPressed: _sendButtonActive ? _handleButtonClick : null,
             icon: Icon(
               Icons.check_circle_outline,
-              color: _handleClick ? Colors.brown : Colors.grey,
+              color: _sendButtonActive ? Colors.brown : Colors.grey,
               size: 20,
             ),
             label: Text(
               '흘려보내기',
               style: TextStyle(
-                color: _handleClick ? Colors.brown : Colors.grey,
+                color: _sendButtonActive ? Colors.brown : Colors.grey,
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),
