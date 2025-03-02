@@ -40,7 +40,7 @@ class _WriteScreenState extends State<WriteScreen> {
     '지금 느끼는 감정을 한 단어로 표현해보고, 그 감정을 느낀 이유를 구체적으로 적어보시게 \n화남. 친구가 약속을 어겼고, 나를 존중하지 않는 것 같아서 기분이 나쁘다.',
   ];
 
-  String _currentMessage = '지금 느끼는 감정을 판단하거나 억제하려 하지 말고, 내가 이런 감정을 느끼고 있구나라고 인정해보시게';
+  String _currentMessage = '지금 느끼는 감정을 판단하거나 억제하려 하지 말고, 내가 이런 감정을 느끼고 있구나라고 인정해보시게 \n나는 지금 슬픔을 느끼고 있구나.';
 
   void _refreshMessage() {
     setState(() {
