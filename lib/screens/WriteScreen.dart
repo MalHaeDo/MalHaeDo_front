@@ -378,12 +378,6 @@ class _WriteScreenState extends State<WriteScreen> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            ),
           ),
           Spacer(),
           Column(
