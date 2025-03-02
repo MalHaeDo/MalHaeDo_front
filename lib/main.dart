@@ -23,10 +23,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       //스플래쉬 화면 제거
-      initialRoute: "/Guest",
+      initialRoute: "/",
       routes: {
         //'/Onboarding': (context) => FixedBackgroundProgressView(),
-        '/Guest': (context) => GuestScreen(),
+        '/': (context) => GuestScreen(),
         '/home': (context) => HomeScreen(),
         '/write': (context) => WriteScreen(),
         '/animation' : (context) => BottleAnimationScreen(),
