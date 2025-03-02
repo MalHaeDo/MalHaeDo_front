@@ -10,6 +10,7 @@ class WriteScreen extends StatefulWidget {
 class _WriteScreenState extends State<WriteScreen> {
   final TextEditingController _textController = TextEditingController();
   bool _sendButtonActive = false;
+  bool _handleClick = false;
 
   @override
   void initState() {
@@ -18,6 +19,12 @@ class _WriteScreenState extends State<WriteScreen> {
       setState(() {
         _sendButtonActive = _textController.text.isNotEmpty;
       });
+    });
+  }
+
+  void _handleButtonClick() {
+    setState(() {
+      _handleClick = true;
     });
   }
 
@@ -340,7 +347,6 @@ class _WriteScreenState extends State<WriteScreen> {
         children: [
           // Send button with text and icon combined
           GestureDetector(
-            onTap: _sendButtonActive ? _navigateToAnimation : null,
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
@@ -351,14 +357,14 @@ class _WriteScreenState extends State<WriteScreen> {
                 children: [
                   Icon(
                     Icons.check_circle_outline,
-                    color: _sendButtonActive ? Colors.brown : Colors.grey,
+                    color: _handleClick ? Colors.brown : Colors.grey,
                     size: 20,
                   ),
                   SizedBox(width: 4),
                   Text(
                     '흘려보내기',
                     style: TextStyle(
-                      color: _sendButtonActive ? Colors.brown : Colors.grey,
+                      color: _handleClick ? Colors.brown : Colors.grey,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
@@ -395,17 +401,20 @@ class _WriteScreenState extends State<WriteScreen> {
   }
 
   Widget _buildBottleIcon() {
-    return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      decoration: BoxDecoration(
-        color: Color(0xBFA0622E),
-        shape: BoxShape.circle,
-      ),
-      padding: EdgeInsets.all(8),
-      child: Image.asset(
-        _sendButtonActive ? 'assets/images/full_bottle.png' : 'assets/images/bottle.png',
-        width: 50,
-        height: 50,
+    return GestureDetector(
+      onTap: _sendButtonActive ? _navigateToAnimation : null,
+      child: Container(
+        margin: EdgeInsets.only(bottom: 16),
+        decoration: BoxDecoration(
+          color: _sendButtonActive ? Color(0xBFA0622E) : Colors.grey,
+          shape: BoxShape.circle,
+        ),
+        padding: EdgeInsets.all(8),
+        child: Image.asset(
+          _sendButtonActive ? 'assets/images/full_bottle.png' : 'assets/images/bottle.png',
+          width: 50,
+          height: 50,
+        ),
       ),
     );
   }
