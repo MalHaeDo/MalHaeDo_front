@@ -358,7 +358,6 @@ class _WriteScreenState extends State<WriteScreen> {
 
   Widget _buildFooter() {
     return Container(
-      color: Colors.transparent,
       padding: const EdgeInsets.all(16.0),
       child: Row(
         children: [
@@ -383,10 +382,10 @@ class _WriteScreenState extends State<WriteScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text(
+                Text(
                 '${_textController.text.length}/1000',
                 style: TextStyle(
-                  color: _textController.text.length > 900 ? Colors.red : Colors.grey,
+                  color: _textController.text.length > 900 ? Colors.red : (_sendButtonActive ? Colors.grey : Colors.brown),
                   fontSize: 14,
                 ),
               ),
