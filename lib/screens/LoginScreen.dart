@@ -30,22 +30,18 @@ class LoginScreen extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  width: 80,
-                  height: 80,
-                  decoration: const BoxDecoration(
-                    color: Colors.grey,
-                    shape: BoxShape.circle,
-                  ),
                   child: ClipOval(
                     child: Image.asset(
                       'assets/images/Profile_gom.png',
+                      width: 80,
+                      height: 80,
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
                 const SizedBox(height: 20),
                 const Text(
-                  '게스트 이용 시 데이터가 일정 기간 후 삭제된다네.\n그래도 진행하겠는가?',
+                  '게스트 이용 시 데이터가 일정 기간 후 \n삭제된다네.\n그래도 진행하겠는가?',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),

@@ -10,6 +10,7 @@ import 'package:malhaeboredo/screens/ReplyAnimationScreen.dart';
 import 'package:malhaeboredo/screens/BottleLeft.dart';
 import 'package:malhaeboredo/screens/LoginScreen.dart';
 import 'package:malhaeboredo/screens/SplashScreen.dart';
+import 'package:malhaeboredo/screens/MyPageScreen.dart';
 
 void main() {
   runApp(
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        fontFamily: 'Moneygraphy',
       ),
       initialRoute: "/",
       onGenerateRoute: (settings) {
@@ -50,6 +52,8 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (context) => ReplyAnimationScreen());
           case '/bottleLeft':
             return MaterialPageRoute(builder: (context) => BottleLeftScreen());
+          case '/mypage':
+            return MaterialPageRoute(builder: (context) => MyPageScreen());
           case '/replyDetail':
             final String letterId = settings.arguments as String;
             return MaterialPageRoute(

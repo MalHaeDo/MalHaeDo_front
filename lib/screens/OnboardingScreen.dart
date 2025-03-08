@@ -14,6 +14,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   String _name = '';
   String _islandName = '';
 
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _islandNameController = TextEditingController();
+
   final List<Map<String, String>> _promptData = [
     {
       'title': '곰둥 이장님',
@@ -156,7 +159,41 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                   ),
                   SizedBox(height: 15),
-                  if (_currentPage == 0 || _currentPage == 1) ...[
+                  if (_currentPage == 0) ...[
+                    Text(
+                      _promptData[_currentPage]['content']!,
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 10),
+                    TextField(
+                      controller: _nameController,
+                      onChanged: (value) {
+                        setState(() {
+                          _name = value.length <= 5 ? value : value.substring(0, 5);
+                        });
+                      },
+                      decoration: InputDecoration(
+                        hintText: '내 이름은 (최대 5글자)',
+                        hintStyle: TextStyle(color: Colors.brown),
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                        border: InputBorder.none,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20), // 원하는 radius 값
+                          borderSide: BorderSide(color: Colors.grey, width: 1), // 기본 테두리 색상
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20), // 원하는 radius 값
+                          borderSide: BorderSide(color: Colors.blue, width: 2), // 포커스된 상태 테두리 색상
+                        ),
+                      ),
+                      style: TextStyle(
+                        color: Colors.brown,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ] else if (_currentPage == 1) ...[
                     Text(
                       _promptData[_currentPage]['content']!
                           .replaceAll('{name}', _name)
@@ -165,27 +202,32 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                     SizedBox(height: 10),
                     TextField(
+                      controller: _islandNameController,
                       onChanged: (value) {
                         setState(() {
-                          if (_currentPage == 0) {
-                            //네임이랑 섬 이름이랑 5글자로 넣어서 처리
-                            _name = value.length <= 5 ? value : value.substring(0, 5);
-                          } else {
-                            _islandName = value.length <= 5 ? value : value.substring(0, 5);
-                          }
+                          _islandName = value.length <= 5 ? value : value.substring(0, 5);
                         });
                       },
                       decoration: InputDecoration(
-                        hintText: _currentPage == 1 ? '섬 이름은 (최대 5글자)' : '내 이름은 (최대 5글자)',
-                        border: OutlineInputBorder(),
+                        hintText: '섬 이름은 (최대 5글자)',
+                        hintStyle: TextStyle(color: Colors.brown),
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                        border: InputBorder.none,
+                      ),
+                      style: TextStyle(
+                        color: Colors.brown,
+                        fontSize: 16,
                       ),
                     ),
-                  ] else
+                  ] else ...[
                     Text(
                       _promptData[_currentPage]['content']!,
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 15),
                     ),
+                  ],
                 ],
               ),
             ),
