@@ -75,6 +75,8 @@ flutter:
       - assets/images/Profile_daram.png
       - assets/images/Profile_gom.png
       - assets/images/Profile_pen.png
+      - assets/images/Logo.png
+      - assets/images/Subtitle.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

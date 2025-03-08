@@ -10,100 +10,101 @@ class LoginScreen extends ConsumerWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   void _showGuestConfirmationDialog(BuildContext context, WidgetRef ref) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: const Color(0xFFF5F5F5),
             borderRadius: BorderRadius.circular(20.0),
           ),
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: const Color(0xFFF5F5F5),
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 80,
-                  height: 80,
-                  decoration: const BoxDecoration(
-                    color: Colors.grey,
-                    shape: BoxShape.circle,
-                  ),
-                  child: ClipOval(
-                    child: Image.asset(
-                      'assets/images/Profile_gom.png',
-                      fit: BoxFit.cover,
-                    ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 80,
+                height: 80,
+                decoration: const BoxDecoration(
+                  color: Colors.grey,
+                  shape: BoxShape.circle,
+                ),
+                child: ClipOval(
+                  child: Image.asset(
+                    'assets/images/Profile_gom.png',
+                    fit: BoxFit.cover,
                   ),
                 ),
-                const SizedBox(height: 20),
-                const Text(
-                  '게스트 이용 시 데이터가 일정 기간 후 삭제된다네.\n그래도 진행하겠는가?',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () => Navigator.pop(context),
-                        style: OutlinedButton.styleFrom(
-                          side: const BorderSide(color: Colors.grey),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          padding: const EdgeInsets.symmetric(vertical: 12),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                '게스트 이용 시 데이터가 일정 기간 후 삭제된다네.\n그래도 진행하겠는가?',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () => Navigator.pop(context),
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Colors.grey),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
-                        child: const Text(
-                          '아니',
-                          style: TextStyle(fontSize: 16, color: Colors.black),
-                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                      child: const Text(
+                        '아니',
+                        style: TextStyle(fontSize: 16, color: Colors.black),
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          Navigator.pop(context);
-                          final apiService = ref.read(apiServiceProvider);
-                          try {
-                            final result = await apiService.guestLogin();
-                            final prefs = await SharedPreferences.getInstance();
-                            await prefs.setString('accessToken', result['accessToken']);
-                            Navigator.pushNamed(context, '/Onboarding');
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("로그인 실패: $e")),
-                            );
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xBF8C6D51),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          padding: const EdgeInsets.symmetric(vertical: 12),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        Navigator.pop(context);
+                        final apiService = ref.read(apiServiceProvider);
+                        try {
+                          final result = await apiService.guestLogin();
+                          final prefs = await SharedPreferences.getInstance();
+                          await prefs.setString('accessToken', result['accessToken']);
+                          Navigator.pushNamed(context, '/Onboarding');
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("로그인 실패: $e")),
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xBF8C6D51),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
-                        child: const Text(
-                          '진행할래',
-                          style: TextStyle(fontSize: 16, color: Colors.white),
-                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                      child: const Text(
+                        '진행할래',
+                        style: TextStyle(fontSize: 16, color: Colors.white),
                       ),
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
+    },
+  );
+}
+
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -119,17 +120,20 @@ class LoginScreen extends ConsumerWidget {
           child: Column(
             children: [
               const Spacer(),
-              const Text(
-                '감정을 던져보세요',
-                style: TextStyle(color: Colors.white, fontSize: 18),
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                '말해도',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 48,
-                  fontWeight: FontWeight.bold,
+              Transform.translate(
+                offset: Offset(0, -100), // 50px 위로 이동
+                child: Column(
+                  children: [
+                    Image.asset(
+                      'assets/images/Subtitle.png',
+                      width: 150,
+                    ),
+                    const SizedBox(height: 10),
+                    Image.asset(
+                      'assets/images/Logo.png',
+                      width: 200,
+                    ),
+                  ],
                 ),
               ),
               const Spacer(),

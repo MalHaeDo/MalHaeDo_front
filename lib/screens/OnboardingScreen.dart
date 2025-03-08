@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:malhaeboredo/core/api_service.dart';
 import 'package:dio/dio.dart';
 
-class FixedBackgroundProgressView extends StatefulWidget {
+class OnboardingScreen extends StatefulWidget {
   @override
-  _FixedBackgroundProgressViewState createState() => _FixedBackgroundProgressViewState();
+  _OnboardingScreenState createState() => _OnboardingScreenState();
 }
 
-class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressView> {
+class _OnboardingScreenState extends State<OnboardingScreen> {
   final int _totalPages = 6;
   int _currentPage = 0;
   double _progress = 0.0;
