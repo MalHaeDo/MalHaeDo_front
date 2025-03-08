@@ -80,18 +80,34 @@ class ApiService {
 
   // ✅ 2. 게스트 로그인
   Future<Map<String, dynamic>> guestLogin() async {
-    try {
-      final response = await _dio.post("/member/signup/guest");
+  try {
+    final response = await _dio.post("/member/signup/guest");
 
-      // 토큰 저장
+    // 응답 데이터를 명시적으로 Map으로 캐스팅
+    var data = response.data as Map<String, dynamic>;
+
+    // 데이터 로그 확인
+    print('API 응답: $data');
+
+    // accessToken 추출
+    final accessToken = data['result']?['accessToken'];
+
+    // 액세스 토큰 로그 찍기
+    print('액세스 토큰: $accessToken');
+
+    if (accessToken != null) {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('accessToken', response.data['result']['accessToken']);
-
-      return response.data;
-    } catch (e) {
-      throw Exception("게스트 로그인 실패");
+      String? storedToken = prefs.getString('accessToken');
+      print('저장된 액세스 토큰: $storedToken');
+      return data; // 응답 반환
+    } else {
+      throw Exception("accessToken이 응답에 없음");
     }
+  } catch (e) {
+    print('게스트 로그인 실패: $e');
+    throw Exception("게스트 로그인 실패");
   }
+}
 
   // ✅ 3. 사용자 정보 가져오기
   Future<Map<String, dynamic>> getUserInfo() async {

@@ -31,24 +31,33 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: "/",
       onGenerateRoute: (settings) {
-        if (settings.name == '/replyDetail') {
-          final String letterId = settings.arguments as String;
-          return MaterialPageRoute(
-            builder: (context) => ReplyDetailScreen(letterId: letterId),
-          );
+        switch (settings.name) {
+          case '/':
+            return MaterialPageRoute(builder: (context) => SplashScreen());
+          case '/login':
+            return MaterialPageRoute(builder: (context) => LoginScreen());
+          case '/Onboarding':
+            return MaterialPageRoute(builder: (context) => OnboardingScreen());
+          case '/home':
+            return MaterialPageRoute(builder: (context) => HomeScreen());
+          case '/write':
+            return MaterialPageRoute(builder: (context) => WriteScreen());
+          case '/animation':
+            return MaterialPageRoute(builder: (context) => BottleAnimationScreen());
+          case '/reply':
+            return MaterialPageRoute(builder: (context) => ReplyScreen());
+          case '/replyAnimation':
+            return MaterialPageRoute(builder: (context) => ReplyAnimationScreen());
+          case '/bottleLeft':
+            return MaterialPageRoute(builder: (context) => BottleLeftScreen());
+          case '/replyDetail':
+            final String letterId = settings.arguments as String;
+            return MaterialPageRoute(
+              builder: (context) => ReplyDetailScreen(letterId: letterId),
+            );
+          default:
+            return null;
         }
-        return null;
-      },
-      routes: {
-        '/': (context) => SplashScreen(),
-        '/Onboarding': (context) => OnboardingScreen(),
-        '/login': (context) => LoginScreen(),
-        '/home': (context) => HomeScreen(),
-        '/write': (context) => WriteScreen(),
-        '/animation': (context) => BottleAnimationScreen(),
-        '/reply': (context) => ReplyScreen(),
-        '/replyAnimation': (context) => ReplyAnimationScreen(),
-        '/bottleLeft': (context) => BottleLeftScreen(),
       },
     );
   }
