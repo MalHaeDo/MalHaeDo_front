@@ -1,31 +1,128 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:malhaeboredo/data/repositories/user_repository.dart';
 
 class ReplyDetailScreen extends StatefulWidget {
+  final String letterId;
+  ReplyDetailScreen({required this.letterId});
+
   @override
   _ReplyDetailScreenState createState() => _ReplyDetailScreenState();
 }
 
 class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
-  final String _replyMessage =
-      "\"에구, 많이 속상했겠다 헤헷, 나도 비슷한 기분을 느낀 적이 있어. 우리 집에서도 형만 예뻐하는 것 같아서 한동안 마음이 꽁꽁 얼어붙었거든. '나는 왜 이렇게 투명인간 같지?' 싶었어, 아무리 노력해도 인정받지 못하는 것 같아서 너무 서러웠지 헤헷.";
-  final String _replyMessage1 =
-      "\"음...바다처럼 깊겠구먼...노력해도 부족한 것 같을 때, 정말 답답하고 지치는 법이지... 하지만 말이야, 너의 노력도 언젠가 흐름을 타게 될 것이야, 뚜벅. 그래서 나는 이하이의 '한숨'이 노래를 추천하네. 이 노래는 말이지, 우리가 스스로 이겨낼";
-
+  late String _replyMessage;
   bool _isFirstMessage = true;
   String? videoUrl;
+  String? letterImage;
+  String? songTitle;
+  String? profileImage;
+  String? singer;
+  String? senderName = '';
+  final UserRepository _userRepository = UserRepository();
 
   @override
   void initState() {
     super.initState();
-    loadDummyVideoUrl();
+    _loadReplyData(widget.letterId);
+    _loadRecommendedSong(widget.letterId);
   }
 
-  void loadDummyVideoUrl() async {
-    setState(() {
-      videoUrl = 'https://www.youtube.com/watch?v=5iSlfF8TQ9k';
-    });
+  Future<void> _loadReplyData(String letterId) async {
+    try {
+      final replyData = await getRepliesByLetterId(letterId);
+      setState(() {
+        _replyMessage = replyData['content'];
+        senderName = replyData['sender'];
+        letterImage = _getLetterImage(senderName!);
+        profileImage = _getProfileImage(senderName!);
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> _loadRecommendedSong(String letterId) async {
+    try {
+      final songData = await recommendLetter(letterId);
+      setState(() {
+        songTitle = songData['title'];
+        singer = songData['singer'];
+        videoUrl = songData['url'];
+      });
+    } catch (e) {
+      // 오류 처리
+    }
+  }
+
+  String _getLetterImage(String sender) {
+    switch (sender) {
+      case 'BAEBDURI':
+        return 'assets/images/PaperPink.png';
+      case 'DARAMI':
+        return 'assets/images/PaperBlue.png';
+      case 'PENGLE':
+        return 'assets/images/paper.png';
+      default:
+        return 'assets/images/paper1.png';  
+    }
+  }
+
+  String _getProfileImage(String sender) {
+    switch (sender) {
+      case 'BAEBDURI':
+        return 'assets/images/Profile_bird.png';
+      case 'DARAMI':
+        return 'assets/images/Profile_daram.png';
+      case 'PENGLE':
+        return 'assets/images/Profile_pen.png';
+      default:
+        return 'assets/images/Profile_gom.png';  
+    }
+  }
+
+  Future<Map<String, dynamic>> recommendLetter(String letterId) async {
+  try {
+    // API 호출
+    final response = await _userRepository.recommendLetter(letterId);
+
+    // 응답이 성공적인지 확인
+    if (response['isSuccess'] == true) {
+      return {
+        'isSuccess': true,
+        'title': response['result']['title'],
+        'singer': response['result']['singer'],
+        'songId': response['result']['songId'],
+        'reason': response['result']['reason'],
+        'url': response['result']['url'],
+      };
+    } else {
+      throw Exception("추천 실패: ${response['message']}");
+    }
+  } catch (e) {
+    throw Exception("추천 실패: $e");
+  }
+}
+
+  Future<Map<String, dynamic>> getRepliesByLetterId(String letterId) async {
+    try {
+      final response = await _userRepository.getRepliesByLetterId(letterId);  // API 호출
+
+      if (response['isSuccess'] == true) {
+        return {
+          'isSuccess': true,
+          'message': response['message'],
+          'replyId': response['result']['replyId'],
+          'sender': response['result']['sender'],
+          'content': response['result']['content'],
+        };
+      } else {
+        throw Exception("답장 가져오기 실패: ${response['message']}");
+      }
+    } catch (e) {
+      throw Exception("답장 가져오기 실패: $e");
+    }
   }
 
   @override
@@ -65,7 +162,7 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   children: [
-                  _messageTab("펭글이 편지", true),
+                  _messageTab("$senderName 편지", true),
                   SizedBox(width: 10),
                   _messageTab("곰둥이장님 편지", false),
                   ],
@@ -78,9 +175,7 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
                   margin: EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(_isFirstMessage
-                          ? 'assets/images/paper.png'
-                          : 'assets/images/paper1.png'),
+                      image: AssetImage(letterImage ?? 'assets/images/paper.png'),
                       fit: BoxFit.cover,
                     ),
                     boxShadow: [
@@ -146,35 +241,33 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
 
   // 편지 헤더
   Widget _messageHeader() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        children: [
-          CircleAvatar(
-            backgroundColor: Colors.white,
-            radius: 20,
-            child: SvgPicture.asset(
-              _isFirstMessage
-                  ? 'assets/images/penguin.svg'
-                  : 'assets/images/bear.svg',
-              width: 30,
-              height: 30,
-              fit: BoxFit.contain,
-            ),
+  return Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: Row(
+      children: [
+        CircleAvatar(
+          backgroundColor: Colors.white,
+          radius: 20,
+          child: Image.asset(
+            profileImage ?? 'assets/images/paper.png', // Use Image.asset here
+            width: 30,
+            height: 30,
+            fit: BoxFit.contain,
           ),
-          SizedBox(width: 10),
-          Text(
-            'To. 웅이에게',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
+        ),
+        SizedBox(width: 10),
+        Text(
+          'To. 웅이에게',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
 
   // 메시지 내용
   Widget _messageContent() {
@@ -186,7 +279,7 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
             children: [
               SizedBox(height: 10),
               Text(
-                _isFirstMessage ? _replyMessage : _replyMessage1,
+                _isFirstMessage ? _replyMessage : _replyMessage,
                 style: TextStyle(fontSize: 16, height: 1.5, color: Colors.black87),
               ),
               SizedBox(height: 20),
@@ -216,23 +309,47 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
   }
 
   // 하단 버튼 생성
-  Widget _bottomButton(String text, Color color, String route, {Color textColor = Colors.black87}) {
-    return Expanded(
-      child: ElevatedButton(
-        onPressed: () => Navigator.pushNamed(context, route),
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: textColor),
-        ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: color,
-          padding: EdgeInsets.symmetric(vertical: 12),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          elevation: 0,
-        ),
+Widget _bottomButton(String text, Color color, String route, {Color textColor = Colors.black87}) {
+  return Expanded(
+    child: ElevatedButton(
+      onPressed: () async {
+        if (text == '버리기') {
+          // 답장 삭제
+          await _deleteReply(widget.letterId);
+          setState(() {
+            _replyMessage = ''; // 삭제 후 메시지 비우기
+            senderName = ''; // 발신자 초기화
+            letterImage = null; // 편지지 이미지 초기화
+          });
+        } else {
+          // 보관하기 버튼일 경우
+          Navigator.pushNamed(context, '/home');
+        }
+      },
+      child: Text(
+        text,
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: textColor),
       ),
-    );
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        padding: EdgeInsets.symmetric(vertical: 12),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        elevation: 0,
+      ),
+    ),
+  );
+}
+
+// 답장 삭제 함수
+Future<void> _deleteReply(String letterId) async {
+  try {
+    // 실제 삭제 로직 호출
+    await _userRepository.deleteReply(letterId);
+  } catch (e) {
+    print("답장 삭제 실패: $e");
+    // 여기서 추가적인 오류 처리도 가능
   }
+}
 }
 
 // 유튜브 플레이어 위젯
@@ -252,3 +369,4 @@ class YoutubePlayerScreen extends StatelessWidget {
     );
   }
 }
+

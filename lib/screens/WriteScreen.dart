@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:malhaeboredo/data/repositories/user_repository.dart';
 
 class WriteScreen extends StatefulWidget {
   @override
@@ -11,6 +12,9 @@ class _WriteScreenState extends State<WriteScreen> {
   final TextEditingController _textController = TextEditingController();
   bool _sendButtonActive = false;
   bool _handleClick = false;
+  bool _isLoading = false; // 로딩 상태 변수
+  String _letterContent = ''; // 편지 내용
+  final UserRepository _userRepository = UserRepository();
 
   @override
   void initState() {
@@ -22,10 +26,39 @@ class _WriteScreenState extends State<WriteScreen> {
     });
   }
 
-  void _handleButtonClick() {
+  void _handleButtonClick() async {
+    if (_letterContent.isEmpty) return; // 내용이 비어있으면 아무것도 하지 않음
+
     setState(() {
-      _handleClick = true;
+      _isLoading = true; // 로딩 시작
     });
+
+    try {
+      final response = await _userRepository.sendLetter({
+        'content': _letterContent, // 편지 내용 전달
+      });
+
+      if (response['isSuccess'] == true) {
+        // 성공 시 UI 업데이트
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('편지 전송 성공: ${response['message']}')),
+        );
+      } else {
+        // 실패 시 UI 업데이트
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('편지 전송 실패: ${response['message']}')),
+        );
+      }
+    } catch (e) {
+      // 오류 발생 시 UI 업데이트
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('편지 전송 실패: $e')),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false; // 로딩 끝
+      });
+    }
   }
 
   final List<String> _messages = [

@@ -38,7 +38,7 @@ class _ReplyScreenState extends State<ReplyScreen> {
                     width: 20,
                     height: 20,
                     ),
-                    SizedBox(width: 4),
+                    SizedBox(width: 2),
                     Text("2개", style: TextStyle(color: Colors.white, fontSize: 16)),
                   ],
                   ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:malhaeboredo/core/api_service.dart';
+import 'package:dio/dio.dart';
 
 class FixedBackgroundProgressView extends StatefulWidget {
   @override
@@ -50,8 +52,42 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
         _progress = _currentPage / (_totalPages - 1);
       });
     } else {
-      Navigator.pushReplacementNamed(context, '/home');
+      _saveProfile();
     }
+  }
+
+  void _saveProfile() async {
+    final apiService = ApiService();
+
+    try {
+      final result = await apiService.userProfile(_name, _islandName);
+      // API 호출 후 성공 메시지 출력 및 다음 화면으로 이동
+      if (result['isSuccess']) {
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
+        _showErrorMessage(result['message']);
+      }
+    } catch (e) {
+      _showErrorMessage('프로필 업데이트에 실패했습니다.');
+    }
+  }
+
+  void _showErrorMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('오류'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('확인'),
+          ),
+        ],
+      ),
+    );
   }
 
   void _goToPreviousPage() {
@@ -133,11 +169,9 @@ class _FixedBackgroundProgressViewState extends State<FixedBackgroundProgressVie
                         setState(() {
                           if (_currentPage == 0) {
                             //네임이랑 섬 이름이랑 5글자로 넣어서 처리
-                            _name.length < 5 ? _name = value : _name = value.substring(0, 5);
-                            _name = value;
+                            _name = value.length <= 5 ? value : value.substring(0, 5);
                           } else {
-                            'islandName'.length < 5 ? _islandName = value : _islandName = value.substring(0, 5);
-                            _islandName = value;
+                            _islandName = value.length <= 5 ? value : value.substring(0, 5);
                           }
                         });
                       },

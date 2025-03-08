@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:malhaeboredo/data/repositories/user_repository.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -8,6 +9,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _showMessage = false;
+  int _sentCount = 0;
+  int _repliedCount = 0;
+  final UserRepository _userRepository = UserRepository();
 
   @override
   void initState() {
@@ -20,6 +24,19 @@ void _checkSavedMessage() async {
   setState(() {
     _showMessage = prefs.getString('saved_message') != null;
   });
+}
+
+void _fetchReplyStorage() async {
+    try {
+      final response = await _userRepository.getReplyStorage();  // UserRepository를 통해 API 호출
+      setState(() {
+        _sentCount = response['result']['sentCount'];
+        _repliedCount = response['result']['repliedCount'];
+      });
+    } catch (e) {
+      // 실패 시 처리
+      print("Error fetching reply storage: $e");
+    }
 }
 
   @override
@@ -44,7 +61,6 @@ void _checkSavedMessage() async {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                    // 중앙 로켓과 카운트
                     Row(
                       children: [
                       Image.asset(
@@ -54,7 +70,7 @@ void _checkSavedMessage() async {
                       ),
                       SizedBox(width: 20),
                       Text(
-                      '2개',
+                      '$_sentCount개',
                       style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
