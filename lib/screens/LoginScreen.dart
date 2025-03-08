@@ -35,14 +35,14 @@ class LoginScreen extends ConsumerWidget {
                   ),
                   child: ClipOval(
                     child: Image.asset(
-                      'assets/images/Bear.png',
+                      'assets/images/Profile_gom.png',
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
                 const SizedBox(height: 20),
                 const Text(
-                  '게스트 이용 시 데이터가 일정 기간 후 삭제됩니다.\n그래도 진행하겠는가?',
+                  '게스트 이용 시 데이터가 일정 기간 후 삭제된다네.\n그래도 진행하겠는가?',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),

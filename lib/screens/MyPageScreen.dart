@@ -375,7 +375,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                 ),
                 child: Center(
                   child: Image.asset(
-                    'assets/images/character.png',
+                    'assets/images/Profile_gom.png',
                     width: 60,
                     height: 60,
                     fit: BoxFit.contain,
@@ -489,7 +489,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                 ),
                 child: Center(
                   child: Image.asset(
-                    'assets/images/character.png',
+                    'assets/images/Profile_gom.png',
                     width: 60,
                     height: 60,
                     fit: BoxFit.contain,
