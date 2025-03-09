@@ -167,7 +167,7 @@ class ApiService {
   }
 
   // ✅ 8. 특정 편지에 대한 답장 조회
-  Future<Map<String, dynamic>> getRepliesByLetterId(String letterId) async {
+  Future<Map<String, dynamic>> getRepliesByLetterId(int letterId) async {
     try {
       final response = await _dio.get("/reply/$letterId");
       return response.data;

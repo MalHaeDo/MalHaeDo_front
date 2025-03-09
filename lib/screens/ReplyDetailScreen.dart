@@ -25,11 +25,11 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
   @override
   void initState() {
     super.initState();
-    _loadReplyData(widget.letterId);
+    _loadReplyData(widget.letterId as int);
     _loadRecommendedSong(widget.letterId);
   }
 
-  Future<void> _loadReplyData(String letterId) async {
+  Future<void> _loadReplyData(int letterId) async {
     try {
       final replyData = await getRepliesByLetterId(letterId);
       setState(() {
@@ -105,7 +105,7 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
   }
 }
 
-  Future<Map<String, dynamic>> getRepliesByLetterId(String letterId) async {
+  Future<Map<String, dynamic>> getRepliesByLetterId(int letterId) async {
     try {
       final response = await _userRepository.getRepliesByLetterId(letterId);  // API 호출
 

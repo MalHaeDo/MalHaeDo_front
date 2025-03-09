@@ -447,7 +447,7 @@ class _WriteScreenState extends State<WriteScreen> {
         ),
         padding: EdgeInsets.all(8),
         child: Image.asset(
-          _sendButtonActive ? 'assets/images/full_bottle.png' : 'assets/images/bottle.png',
+          _sendButtonActive ? 'assets/images/full_bottle.png' : 'assets/images/none_bottle.png',
           width: 50,
           height: 50,
         ),

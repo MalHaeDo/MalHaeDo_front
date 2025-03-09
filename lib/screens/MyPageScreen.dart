@@ -20,6 +20,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
   late String _userName = '';
   late String _islandName = '';
   late List<Map<String, dynamic>> _bottleData = [];
+  late int letterId = 0;
 
   @override
   void initState() {
@@ -36,6 +37,8 @@ class _MyPageScreenState extends State<MyPageScreen> {
       setState(() {
         _userName = response['userNickname'];
         _islandName = response['userIslandName'];
+        print(_userName);
+        print(_islandName);
       });
     } catch (e) {
       print("Error loading user profile: $e");
@@ -97,7 +100,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
 
   Future<void> _fetchBottleData() async {
     try {
-      final response = await _apiService.getRepliesByLetterId("letterId");
+      final response = await _apiService.getRepliesByLetterId(letterId);
       if (response['isSuccess'] == true) {
         setState(() {
           _bottleData = response['result']['bottleData'];

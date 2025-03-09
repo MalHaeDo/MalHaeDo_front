@@ -180,12 +180,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                         border: InputBorder.none,
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20), // 원하는 radius 값
+                          borderRadius: BorderRadius.circular(30), // 원하는 radius 값
                           borderSide: BorderSide(color: Colors.grey, width: 1), // 기본 테두리 색상
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20), // 원하는 radius 값
-                          borderSide: BorderSide(color: Colors.blue, width: 2), // 포커스된 상태 테두리 색상
+                          borderRadius: BorderRadius.circular(30), // 원하는 radius 값
+                          borderSide: BorderSide(color: Colors.brown, width: 2), // 포커스된 상태 테두리 색상
                         ),
                       ),
                       style: TextStyle(
@@ -215,6 +215,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         fillColor: Colors.white,
                         contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                         border: InputBorder.none,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30), // 원하는 radius 값
+                          borderSide: BorderSide(color: Colors.grey, width: 1), // 기본 테두리 색상
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30), // 원하는 radius 값
+                          borderSide: BorderSide(color: Colors.brown, width: 2), // 포커스된 상태 테두리 색상
+                        ),
                       ),
                       style: TextStyle(
                         color: Colors.brown,

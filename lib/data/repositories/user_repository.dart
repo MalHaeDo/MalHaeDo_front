@@ -22,7 +22,7 @@ class UserRepository {
     }
   }
 
-  Future<Map<String, dynamic>> getRepliesByLetterId(String letterId) async {
+  Future<Map<String, dynamic>> getRepliesByLetterId(int letterId) async {
     try {
       final response = await _apiService.getRepliesByLetterId(letterId);  // API 호출
 

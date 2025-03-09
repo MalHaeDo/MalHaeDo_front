@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
               left: 0,
               right: 0,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.only(left: 20, top: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         SizedBox(width: 5),
                         Text(
-                          '$_sentCount개',
+                          '$_repliedCount개',
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
