@@ -18,7 +18,6 @@ class _ReplyScreenState extends State<ReplyScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _fetchLetterData();
   }
@@ -28,7 +27,7 @@ class _ReplyScreenState extends State<ReplyScreen> {
       final response = await _userRepository.getRepliesByLetterId(_replyId);
       if (response['isSuccess']) {
         setState(() {
-          _senderName = response['result']['sender']; // sender 정보 저장
+          _senderName = response['result']['sender']; 
           _isLoading = false;
           _replyId = response['result']['replyId'];
           print(_senderName);

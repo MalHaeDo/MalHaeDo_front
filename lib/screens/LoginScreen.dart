@@ -177,7 +177,7 @@ class LoginScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 10),
               TextButton(
                 onPressed: () => _showGuestConfirmationDialog(context, ref),
                 child: const Text(

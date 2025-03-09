@@ -84,6 +84,7 @@ flutter:
       - assets/images/Alarm_Da.png
       - assets/images/Alarm_Bap.png
       - assets/images/Letter_heavy.png
+      - assets/images/Letter_Empty_bottle.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

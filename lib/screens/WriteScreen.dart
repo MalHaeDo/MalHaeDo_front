@@ -27,39 +27,48 @@ class _WriteScreenState extends State<WriteScreen> {
   }
 
   void _handleButtonClick() async {
-    setState(() {
-      _letterContent = _textController.text; // 텍스트 필드에서 입력된 값을 _letterContent에 할당
+  setState(() {
+    _letterContent = _textController.text; // 텍스트 필드에서 입력된 값을 _letterContent에 할당
+  });
+
+  if (_letterContent.isEmpty) return; // 내용이 비어있으면 아무것도 하지 않음
+
+  setState(() {
+    _isLoading = true; // 로딩 시작
+  });
+
+  try {
+    final response = await _userRepository.sendLetter({
+      'content': _letterContent,
+      'isReplyAllowed': true,
     });
 
-    if (_letterContent.isEmpty) return; // 내용이 비어있으면 아무것도 하지 않음
+    print("내가 쓴 글: $_letterContent");
+    print("응답 전체: $response");
 
-    setState(() {
-      _isLoading = true; // 로딩 시작
-    });
-
-    try {
-      final response = await _userRepository.sendLetter({
-        'content': _letterContent,
-        'isReplyAllowed': true,
-      });
-
-      print("내가 쓴 글: $_letterContent");
-
-      if (response['isSuccess'] == true) {
-        // 성공 시 콘솔 출력
-        print('편지 전송 성공: ${response['message']}');
+    if (response['isSuccess'] == true) {
+      // 성공 시 콘솔 출력
+      print('편지 전송 성공: ${response['message']}');
+      
+      // result가 null인지 확인 후 letterId 출력
+      if (response.containsKey('letterId')) {
+        print('편지 ID: ${response['letterId']}');
       } else {
-        print('편지 전송 실패: ${response['message']}');
+        print('편지 ID가 없습니다.');
       }
-    } catch (e) {
-      // 오류 발생 시 콘솔 출력
-      print('편지 전송 실패: $e');
-    } finally {
-      setState(() {
-        _isLoading = false; // 로딩 끝
-      });
+    } else {
+      print('편지 전송 실패: ${response['message']}');
     }
+  } catch (e) {
+    // 오류 발생 시 콘솔 출력
+    print('편지 전송 실패: $e');
+  } finally {
+    setState(() {
+      _isLoading = false; // 로딩 끝
+    });
+  }
 }
+
 
   final List<String> _messages = [
     '지금 느끼는 감정을 판단하거나 억제하려 하지 말고, 내가 이런 감정을 느끼고 있구나라고 인정해보시게',
@@ -451,7 +460,7 @@ class _WriteScreenState extends State<WriteScreen> {
         ),
         padding: EdgeInsets.all(8),
         child: Image.asset(
-          _sendButtonActive ? 'assets/images/full_bottle.png' : 'assets/images/bottle.png',
+          _sendButtonActive ? 'assets/images/full_bottle.png' : 'assets/images/Letter_Empty_bottle.png',
           width: 50,
           height: 50,
         ),
