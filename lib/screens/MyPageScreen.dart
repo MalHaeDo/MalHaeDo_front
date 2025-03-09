@@ -33,7 +33,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
 
   Future<void> _loadUserData() async {
     try {
-      final response = await _apiService.userProfile("userNickname", "userIslandName");
+      final response = await _apiService.userProfile(_userName, _islandName);
       setState(() {
         _userName = response['userNickname'];
         _islandName = response['userIslandName'];
@@ -164,35 +164,39 @@ class _MyPageScreenState extends State<MyPageScreen> {
 
   // Build title and back button
   Widget _buildTitle() {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Row(
-          children: [
-            IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () => Navigator.pop(context),
+  return SafeArea(
+    child: Padding(
+      padding: const EdgeInsets.only(top: 20, left: 16, right: 16),
+      child: Row(
+        children: [
+          IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context),
+          ),
+          Expanded(  // 가운데 정렬을 위해 Expanded 사용
+            child: Center(
+              child: Text(
+                "마이페이지",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
             ),
-            const Text(
-              "마이페이지",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   // Build counter section (sent and replied count)
   Widget _buildCounters() {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.only(top: 80.0, left: 16.0, right: 16.0),
-        child: Column(
+        child: Row(
           children: [
             _buildCounterRow('assets/images/box.png', '$_sentCount개'),
             const SizedBox(height: 16),
-            _buildCounterRow('assets/images/bottle.png', '$_repliedCount개', noReplyText: _repliedCount == 0 ? "답장이 없습니다" : null),
+            _buildCounterRow('assets/images/bottle.png', '$_repliedCount개', noReplyText: _repliedCount == 0 ? "" : null),
           ],
         ),
       ),
@@ -226,7 +230,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "$_islandName에 $_userName주인",
+              "$_islandName에 $_userName주민",
               style: const TextStyle(color: Colors.white, fontSize: 16),
             ),
             _buildEditButton(),
@@ -285,37 +289,41 @@ class _MyPageScreenState extends State<MyPageScreen> {
   }
 
   Widget _buildHelpButton() {
-    return Expanded(
-      child: TextButton(
-        onPressed: () => _showHelpDialog(),
-        child: const Center(
-          child: Text("도움말", style: TextStyle(fontSize: 14)),
-        ),
+  return Expanded(
+    child: TextButton(
+      onPressed: () => _showHelpDialog(),
+      style: TextButton.styleFrom(backgroundColor: Colors.transparent), // 배경 제거
+      child: const Center(
+        child: Text("도움말", style: TextStyle(fontSize: 14, color: Colors.black)),
       ),
-    );
-  }
+    ),
+  );
+}
 
-  Widget _buildLogoutButton() {
-    return Expanded(
-      child: TextButton(
-        onPressed: () => _showLogoutDialog(),
-        child: const Center(
-          child: Text("로그아웃", style: TextStyle(fontSize: 14, color: Colors.blue)),
-        ),
+Widget _buildLogoutButton() {
+  return Expanded(
+    child: TextButton(
+      onPressed: () => _showLogoutDialog(),
+      style: TextButton.styleFrom(backgroundColor: Colors.transparent), // 배경 제거
+      child: const Center(
+        child: Text("로그아웃", style: TextStyle(fontSize: 14, color: Colors.black)),
       ),
-    );
-  }
+    ),
+  );
+}
 
-  Widget _buildDeleteButton() {
-    return Expanded(
-      child: TextButton(
-        onPressed: () => _showDeleteUserDialog(),
-        child: const Center(
-          child: Text("탈퇴", style: TextStyle(fontSize: 14)),
-        ),
+Widget _buildDeleteButton() {
+  return Expanded(
+    child: TextButton(
+      onPressed: () => _showDeleteUserDialog(),
+      style: TextButton.styleFrom(backgroundColor: Colors.transparent), // 배경 제거
+      child: const Center(
+        child: Text("탈퇴", style: TextStyle(fontSize: 14, color: Colors.black)),
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   // Show help dialog
   void _showHelpDialog() {

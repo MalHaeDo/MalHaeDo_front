@@ -83,7 +83,7 @@ class _ReplyScreenState extends State<ReplyScreen> {
           // 상단 상태 표시줄
           SafeArea(
             child: Padding(
-                padding: EdgeInsets.only(left: 20, top: 20),
+                padding: EdgeInsets.only(left: 80, top: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -105,7 +105,7 @@ class _ReplyScreenState extends State<ReplyScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(width: 100),
+                    SizedBox(width: 120),
                     GestureDetector(
                       onTap: () async {
                         await Navigator.pushNamed(context, '/mypage');
