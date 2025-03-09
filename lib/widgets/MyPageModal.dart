@@ -72,7 +72,7 @@ class _IslandNameDialogState extends State<IslandNameDialog> {
                 const Expanded(
                   child: Center(
                     child: Text(
-                      '도의',
+                      '마이페이지',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -99,22 +99,26 @@ class _IslandNameDialogState extends State<IslandNameDialog> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
                     child: Center(
                       child: TextField(
                         controller: _islandNameController,
-                        textAlign: TextAlign.center,
+                        textAlign: TextAlign.right, // 오른쪽 정렬
                         decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: '섬 이름',
                           hintStyle: TextStyle(color: Colors.grey),
                           contentPadding: EdgeInsets.zero,
+                          suffixText: "도의", // 입력 필드 뒤에 붙는 텍스트
+                          suffixStyle: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
                         ),
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(5), // 최대 5글자
                         ],
                         maxLength: 5,
-                        // 입력 길이 제한 표시(counterText)를 숨김
                         buildCounter: (_, {required currentLength, required maxLength, required isFocused}) => null,
                       ),
                     ),
@@ -122,9 +126,7 @@ class _IslandNameDialogState extends State<IslandNameDialog> {
                 ),
               ],
             ),
-
-            const SizedBox(height: 10),
-            
+            const SizedBox(height: 20),
             // 두 번째 입력 필드 (변경할 이름)
             Row(
               children: [
@@ -135,22 +137,26 @@ class _IslandNameDialogState extends State<IslandNameDialog> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
                     child: Center(
                       child: TextField(
                         controller: _newNameController,
-                        textAlign: TextAlign.center,
+                        textAlign: TextAlign.right, // 오른쪽 정렬
                         decoration: const InputDecoration(
                           border: InputBorder.none,
-                          hintText: '주민',
+                          hintText: '변경할 이름',
                           hintStyle: TextStyle(color: Colors.grey),
                           contentPadding: EdgeInsets.zero,
+                          suffixText: "주민", // 입력 필드 뒤에 붙는 텍스트
+                          suffixStyle: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
                         ),
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(5), // 최대 5글자
                         ],
                         maxLength: 5,
-                        // 입력 길이 제한 표시(counterText)를 숨김
                         buildCounter: (_, {required currentLength, required maxLength, required isFocused}) => null,
                       ),
                     ),
@@ -163,7 +169,7 @@ class _IslandNameDialogState extends State<IslandNameDialog> {
             Padding(
               padding: const EdgeInsets.only(top: 8),
               child: Align(
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 child: Text(
                   '*최대 5글자라네',
                   style: TextStyle(

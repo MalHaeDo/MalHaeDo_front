@@ -176,7 +176,7 @@ Future<void> _loadUserData() async {
         mainAxisAlignment: MainAxisAlignment.start, // 위에서 20px 띄우기
         crossAxisAlignment: CrossAxisAlignment.center, // 가로 중앙 정렬
         children: [
-          SizedBox(height: 20), // 위에서 20px 띄우기
+          SizedBox(height: 30), // 위에서 20px 띄우기
           Row(
             children: [
               IconButton(
@@ -203,7 +203,7 @@ Future<void> _loadUserData() async {
   // Build counter section (sent and replied count)
   Widget _buildCounters() {
   return Padding(
-    padding: const EdgeInsets.only(left: 16.0, right: 16.0), // 좌우 패딩만 설정
+    padding: const EdgeInsets.only(top: 130.0, left: 16.0, right: 16.0), // 좌우 패딩만 설정
     child: Align(
       alignment: Alignment.topCenter,  // 상단 중앙으로 정렬
       child: Row(
@@ -265,9 +265,28 @@ Future<void> _loadUserData() async {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            "$_islandName에 $_userName주민",
-            style: const TextStyle(color: Colors.white, fontSize: 14), // 폰트 크기 줄임
+          RichText(
+            text: TextSpan(
+              style: TextStyle(fontSize: 14), // 기본 스타일
+              children: <TextSpan>[
+                TextSpan(
+                  text: "$_islandName",
+                  style: TextStyle(color: Colors.white), // 하얀색 텍스트
+                ),
+                TextSpan(
+                  text: " 도 ",
+                  style: TextStyle(color: Colors.black), // 하얀색 텍스트
+                ),
+                TextSpan(
+                  text: "$_userName",
+                  style: TextStyle(color: Colors.white), // 검은색 텍스트
+                ),
+                TextSpan(
+                  text: " 주민",
+                  style: TextStyle(color: Colors.black), // 검은색 텍스트
+                ),
+              ],
+            ),
           ),
           _buildEditButton(),
         ],
@@ -279,9 +298,9 @@ Future<void> _loadUserData() async {
   // Build edit button in bottom navigation
   Widget _buildEditButton() {
   return Container(
-    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 1),
     decoration: BoxDecoration(
-      color: Colors.white.withOpacity(0.3),
+      color: Colors.white.withOpacity(0.7),
       borderRadius: BorderRadius.circular(20),
     ),
     child: TextButton(
@@ -296,9 +315,9 @@ Future<void> _loadUserData() async {
       ),
       child: Row(
         children: [
-          Icon(Icons.refresh, color: Colors.white, size: 16),
+          Icon(Icons.circle, color: Colors.brown, size: 16),
           SizedBox(width: 4),
-          Text("수정하기", style: TextStyle(color: Colors.white)),
+          Text("수정하기", style: TextStyle(color: Colors.brown)),
         ],
       ),
     ),
