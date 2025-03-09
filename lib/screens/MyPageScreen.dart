@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:malhaeboredo/core/api_service.dart';
 import 'package:malhaeboredo/data/repositories/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:malhaeboredo/widgets/MyPageModal.dart';
 
 class MyPageScreen extends StatefulWidget {
   const MyPageScreen({Key? key}) : super(key: key);
@@ -242,21 +243,30 @@ class _MyPageScreenState extends State<MyPageScreen> {
 
   // Build edit button in bottom navigation
   Widget _buildEditButton() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(20),
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+    decoration: BoxDecoration(
+      color: Colors.white.withOpacity(0.3),
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: TextButton(
+      onPressed: () {
+        IslandNameDialog();
+      },
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.zero, // 패딩 제거 (아이콘과 텍스트가 붙게)
       ),
-      child: const Row(
+      child: Row(
         children: [
           Icon(Icons.refresh, color: Colors.white, size: 16),
           SizedBox(width: 4),
           Text("수정하기", style: TextStyle(color: Colors.white)),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   // Build bottom tab bar
   Widget _buildBottomTabBar(double screenWidth) {
@@ -327,32 +337,55 @@ Widget _buildDeleteButton() {
 
   // Show help dialog
   void _showHelpDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("도움말"),
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: const [
-              Text("이용약관"),
-              SizedBox(height: 8),
-              Text("개인정보 처리방침"),
-            ],
-          ),
-          actions: [
-            TextButton(
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text("도움말"),
+        titlePadding: const EdgeInsets.all(16),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        backgroundColor: const Color(0xFFF8F1E7),  // Light beige background
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: const [
+            Text(
+              "이용약관",
+              style: TextStyle(
+                color: Color(0xFFB97D4E),  // Brown/orange text color
+                fontSize: 16,
+              ),
+            ),
+            SizedBox(height: 16),
+            Text(
+              "개인정보처리방침",
+              style: TextStyle(
+                color: Color(0xFFB97D4E),  // Brown/orange text color
+                fontSize: 16,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          Align(
+            alignment: Alignment.topRight,
+            child: IconButton(
+              icon: const Icon(Icons.close, color: Colors.black87),
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text("닫기"),
             ),
-          ],
-        );
-      },
-    );
-  }
+          ),
+        ],
+        actionsPadding: EdgeInsets.zero,
+        actionsAlignment: MainAxisAlignment.start,
+      );
+    },
+  );
+}
 
   // Show logout confirmation dialog
   void _showLogoutDialog() {
@@ -468,6 +501,7 @@ Widget _buildDeleteButton() {
   );
 }
 
+
   // Show delete user confirmation dialog
   void _showDeleteUserDialog() {
   showDialog(
@@ -492,17 +526,11 @@ Widget _buildDeleteButton() {
             children: [
               // Character Image
               Container(
-                width: 80,
-                height: 80,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color(0xFF333333),
-                ),
                 child: Center(
                   child: Image.asset(
                     'assets/images/Profile_gom.png',
-                    width: 60,
-                    height: 60,
+                    width: 80,
+                    height: 80,
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -582,3 +610,4 @@ Widget _buildDeleteButton() {
   );
 }
 }
+

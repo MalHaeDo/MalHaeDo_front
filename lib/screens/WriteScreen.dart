@@ -149,7 +149,7 @@ class _WriteScreenState extends State<WriteScreen> {
             Container(
               margin: EdgeInsets.symmetric(vertical: 20),
               child: Image.asset(
-                'assets/images/full_bottle.png',
+                'assets/images/Letter_heavy.png',
                 width: 60,
                 height: 60,
               ),
