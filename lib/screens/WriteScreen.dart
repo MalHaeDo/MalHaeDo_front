@@ -53,6 +53,7 @@ class _WriteScreenState extends State<WriteScreen> {
       // result가 null인지 확인 후 letterId 출력
       if (response.containsKey('letterId')) {
         print('편지 ID: ${response['letterId']}');
+        savedLetterId(response['letterId']);
       } else {
         print('편지 ID가 없습니다.');
       }
@@ -67,6 +68,11 @@ class _WriteScreenState extends State<WriteScreen> {
       _isLoading = false; // 로딩 끝
     });
   }
+}
+
+void savedLetterId(int letterId) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setInt('letterId', letterId);
 }
 
 

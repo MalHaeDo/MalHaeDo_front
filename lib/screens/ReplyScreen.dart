@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:malhaeboredo/data/repositories/user_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ReplyScreen extends StatefulWidget {
   @override
@@ -7,7 +8,7 @@ class ReplyScreen extends StatefulWidget {
 }
 
 class _ReplyScreenState extends State<ReplyScreen> {
-  String? _letterId;
+  int? _letterId;
   String? _senderName;
   int _repliedCount= 0;
   bool _isLoading = true;
@@ -23,8 +24,10 @@ class _ReplyScreenState extends State<ReplyScreen> {
   }
 
   Future<void> _fetchLetterData() async {
+    final prefs = await SharedPreferences.getInstance();
+    _letterId = prefs.getInt('letterId');
     try {
-      final response = await _userRepository.getRepliesByLetterId(_replyId);
+      final response = await _userRepository.getRepliesByLetterId(_letterId!);
       if (response['isSuccess']) {
         setState(() {
           _senderName = response['result']['sender']; 

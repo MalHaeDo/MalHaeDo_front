@@ -240,7 +240,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xBF8D5A34),
                 foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                 padding: EdgeInsets.symmetric(vertical: 16),
               ),
               child: Text(
