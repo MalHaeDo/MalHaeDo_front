@@ -205,7 +205,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start, 
         children: [
-          SizedBox(height: 20),
+          SizedBox(height: 180),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start, 
@@ -570,7 +570,7 @@ Widget _buildDeleteButton() {
               
               // Text
               const Text(
-                '나중에 돌아올텐가?',
+                '진짜 떠날껀가? \n자네의 흔적이 모두 없어질 수 있다네..',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

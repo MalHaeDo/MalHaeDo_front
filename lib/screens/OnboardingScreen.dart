@@ -36,11 +36,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     },
     {
       'title': '곰둥 이장님',
-      'content': '아 참!\n웅이 그렇듯이 가끔 우리 섬 주민들도 유리병을 날린다네 뚜벅, 답문을 해줘도 되고 모른척해도 된다네 뚜벅~',
+      'content': '아 참!\n웅이 그렇듯이 가끔 우리 섬 주민들도\n 유리병을 날린다네 뚜벅,\n 답문을 해줘도 되고 모른척해도 된다네 뚜벅~',
     },
     {
       'title': '곰둥 이장님',
-      'content': '그럼! 앞으로 어떤 이야기들을 주고받을지 기대되는군 뚜벅~\n웅의 이야기를 기다리겠네.\n그럼 또 보자네 뚜벅~',
+      'content': '그럼! 앞으로 어떤 이야기들을 주고받을지 \n기대되는군 뚜벅~\n{name}의 이야기를 기다리겠네.\n그럼 또 보자네 뚜벅~',
     },
   ];
 
@@ -63,9 +63,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final apiService = ApiService();
 
     try {
-      final result = await apiService.userProfile(_name, _islandName);
-      // API 호출 후 성공 메시지 출력 및 다음 화면으로 이동
+      final name = _nameController.text;
+      final islandName = _islandNameController.text;
+      final result = await apiService.userProfile(name, islandName);
+      print('API 호출 결과: $result');
       if (result['isSuccess']) {
+        print(name);
+        print(islandName);
         Navigator.pushReplacementNamed(context, '/home');
       } else {
         _showErrorMessage(result['message']);

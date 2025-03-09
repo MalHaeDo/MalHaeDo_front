@@ -277,7 +277,9 @@ class _WriteScreenState extends State<WriteScreen> {
   }
 
   Widget _buildMessageCard() {
-    return Card(
+  return Container(
+    width: 400,  // 원하는 가로 크기로 설정
+    child: Card(
       color: Color(0xBFFFFFFF),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
@@ -323,8 +325,10 @@ class _WriteScreenState extends State<WriteScreen> {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   Widget _buildLetterContainer() {
     return Expanded(
