@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:malhaeboredo/core/api_service.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class IslandNameDialog extends StatefulWidget {
   final Function(String)? onSave;
@@ -14,8 +14,13 @@ class IslandNameDialog extends StatefulWidget {
 class _IslandNameDialogState extends State<IslandNameDialog> {
   final TextEditingController _islandNameController = TextEditingController();
   final TextEditingController _newNameController = TextEditingController();
-  final ApiService _apiService = ApiService();
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedData(); // 저장된 데이터 불러오기
+  }
 
   @override
   void dispose() {
@@ -24,40 +29,25 @@ class _IslandNameDialogState extends State<IslandNameDialog> {
     super.dispose();
   }
 
+  Future<void> _loadSavedData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _islandNameController.text = prefs.getString('user_name') ?? '';
+      _newNameController.text = prefs.getString('island_name') ?? '';
+    });
+  }
+
   Future<void> _saveIslandName() async {
     if (_islandNameController.text.isEmpty || _newNameController.text.isEmpty) {
-      return; // Do nothing if either field is empty
+      return;
     }
 
-    setState(() {
-      _isLoading = true;
-    });
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_name', _newNameController.text);
+    await prefs.setString('island_name', _islandNameController.text);
 
-    try {
-      // API 호출
-      final response = await _apiService.userProfile(_islandNameController.text, _newNameController.text);
-      
-      if (response['isSuccess'] == true) {
-        // 성공 시 콜백 호출
-        if (widget.onSave != null) {
-          widget.onSave!(_newNameController.text);
-        }
-        Navigator.of(context).pop();
-      } else {
-        // 에러 메시지 표시
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(response['message'] ?? '저장에 실패했습니다')),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('오류가 발생했습니다: $e')),
-      );
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+    widget.onSave?.call(_newNameController.text);
+    Navigator.of(context).pop();
   }
 
   @override

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:malhaeboredo/core/api_service.dart';
-import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingScreen extends StatefulWidget {
   @override
@@ -36,7 +35,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     },
     {
       'title': '곰둥 이장님',
-      'content': '아 참!\n웅이 그렇듯이 가끔 우리 섬 주민들도\n 유리병을 날린다네 뚜벅,\n 답문을 해줘도 되고 모른척해도 된다네 뚜벅~',
+      'content': '아 참!\n{name}이 그렇듯이 가끔 우리 섬 주민들도\n 유리병을 날린다네 뚜벅,\n 답문을 해줘도 되고 모른척해도 된다네 뚜벅~',
     },
     {
       'title': '곰둥 이장님',
@@ -60,23 +59,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _saveProfile() async {
-    final apiService = ApiService();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_name', _name);
+    await prefs.setString('island_name', _islandName);
 
-    try {
-      final name = _nameController.text;
-      final islandName = _islandNameController.text;
-      final result = await apiService.userProfile(name, islandName);
-      print('API 호출 결과: $result');
-      if (result['isSuccess']) {
-        print(name);
-        print(islandName);
-        Navigator.pushReplacementNamed(context, '/home');
-      } else {
-        _showErrorMessage(result['message']);
-      }
-    } catch (e) {
-      _showErrorMessage('프로필 업데이트에 실패했습니다.');
-    }
+    Navigator.pushReplacementNamed(context, '/home');
   }
 
   void _showErrorMessage(String message) {

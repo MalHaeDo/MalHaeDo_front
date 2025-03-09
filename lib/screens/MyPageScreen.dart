@@ -32,19 +32,23 @@ class _MyPageScreenState extends State<MyPageScreen> {
     _fetchBottleData();
   }
 
-  Future<void> _loadUserData() async {
-    try {
-      final response = await _apiService.userProfile(_userName, _islandName);
-      setState(() {
-        _userName = response['userNickname'];
-        _islandName = response['userIslandName'];
-        print(_userName);
-        print(_islandName);
-      });
-    } catch (e) {
-      print("Error loading user profile: $e");
-    }
+Future<void> _loadUserData() async {
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    final storedUserName = prefs.getString('user_name') ?? '';
+    final storedIslandName = prefs.getString('island_name') ?? '';
+
+    setState(() {
+      _userName = storedUserName;
+      _islandName = storedIslandName;
+      print("유저네임: $_userName");
+      print("섬 이름: $_islandName");
+    });
+  } catch (e) {
+    print("Error loading user profile: $e");
   }
+}
+
 
   Future<void> _loadReplyStorage() async {
     try {
@@ -282,8 +286,11 @@ class _MyPageScreenState extends State<MyPageScreen> {
     ),
     child: TextButton(
       onPressed: () {
-        IslandNameDialog();
-      },
+          showDialog(
+            context: context,
+            builder: (context) => IslandNameDialog(),
+          );
+        },
       style: TextButton.styleFrom(
         padding: EdgeInsets.zero, // 패딩 제거 (아이콘과 텍스트가 붙게)
       ),

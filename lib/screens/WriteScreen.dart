@@ -27,6 +27,10 @@ class _WriteScreenState extends State<WriteScreen> {
   }
 
   void _handleButtonClick() async {
+    setState(() {
+      _letterContent = _textController.text; // 텍스트 필드에서 입력된 값을 _letterContent에 할당
+    });
+
     if (_letterContent.isEmpty) return; // 내용이 비어있으면 아무것도 하지 않음
 
     setState(() {
@@ -35,31 +39,27 @@ class _WriteScreenState extends State<WriteScreen> {
 
     try {
       final response = await _userRepository.sendLetter({
-        'content': _letterContent, // 편지 내용 전달
+        'content': _letterContent,
+        'isReplyAllowed': true,
       });
 
+      print("내가 쓴 글: $_letterContent");
+
       if (response['isSuccess'] == true) {
-        // 성공 시 UI 업데이트
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('편지 전송 성공: ${response['message']}')),
-        );
+        // 성공 시 콘솔 출력
+        print('편지 전송 성공: ${response['message']}');
       } else {
-        // 실패 시 UI 업데이트
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('편지 전송 실패: ${response['message']}')),
-        );
+        print('편지 전송 실패: ${response['message']}');
       }
     } catch (e) {
-      // 오류 발생 시 UI 업데이트
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('편지 전송 실패: $e')),
-      );
+      // 오류 발생 시 콘솔 출력
+      print('편지 전송 실패: $e');
     } finally {
       setState(() {
         _isLoading = false; // 로딩 끝
       });
     }
-  }
+}
 
   final List<String> _messages = [
     '지금 느끼는 감정을 판단하거나 억제하려 하지 말고, 내가 이런 감정을 느끼고 있구나라고 인정해보시게',
@@ -278,7 +278,7 @@ class _WriteScreenState extends State<WriteScreen> {
 
   Widget _buildMessageCard() {
   return Container(
-    width: 400,  // 원하는 가로 크기로 설정
+    width: 350,  // 원하는 가로 크기로 설정
     child: Card(
       color: Color(0xBFFFFFFF),
       shape: RoundedRectangleBorder(
@@ -299,7 +299,7 @@ class _WriteScreenState extends State<WriteScreen> {
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Text(
-                    '공둥 이장님',
+                    '곰둥 이장님',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 14,
