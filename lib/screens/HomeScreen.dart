@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
               left: 0,
               right: 0,
               child: Padding(
-                padding: EdgeInsets.only(left: 80, top: 20),
+                padding: EdgeInsets.only(left: 100, top: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(width: 120),
+                    SizedBox(width: 140),
                     GestureDetector(
                       onTap: () async {
                         await Navigator.pushNamed(context, '/mypage');

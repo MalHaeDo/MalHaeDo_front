@@ -167,19 +167,64 @@ class _MyPageScreenState extends State<MyPageScreen> {
   Widget _buildTitle() {
   return SafeArea(
     child: Padding(
-      padding: const EdgeInsets.only(top: 20, left: 16, right: 16),
-      child: Row(
+      padding: const EdgeInsets.only(left: 16, right: 16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start, // 위에서 20px 띄우기
+        crossAxisAlignment: CrossAxisAlignment.center, // 가로 중앙 정렬
         children: [
-          IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context),
-          ),
-          Expanded(  // 가운데 정렬을 위해 Expanded 사용
-            child: Center(
-              child: Text(
-                "마이페이지",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          SizedBox(height: 20), // 위에서 20px 띄우기
+          Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => Navigator.pop(context),
               ),
+              Expanded(
+                child: Center(
+                  child: Text(
+                    "마이페이지",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+
+  // Build counter section (sent and replied count)
+  Widget _buildCounters() {
+  return Padding(
+    padding: const EdgeInsets.only(left: 16.0, right: 16.0), // 좌우 패딩만 설정
+    child: Align(
+      alignment: Alignment.topCenter,  // 상단 중앙으로 정렬
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start, 
+        children: [
+          SizedBox(height: 20),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start, 
+              children: [
+                Image.asset('assets/images/box.png', width: 50, height: 50), 
+                const SizedBox(height: 8),
+                Text('$_sentCount개', style: TextStyle(fontSize: 14)),
+              ],
+            ),
+          ),
+          const SizedBox(width: 20), 
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start, 
+              children: [
+                Image.asset('assets/images/full_bottle.png', width: 50, height: 50), 
+                const SizedBox(height: 8),
+                Text('$_repliedCount개', style: TextStyle(fontSize: 14)),
+              ],
             ),
           ),
         ],
@@ -188,21 +233,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
   );
 }
 
-  // Build counter section (sent and replied count)
-  Widget _buildCounters() {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 80.0, left: 16.0, right: 16.0),
-        child: Row(
-          children: [
-            _buildCounterRow('assets/images/box.png', '$_sentCount개'),
-            const SizedBox(height: 16),
-            _buildCounterRow('assets/images/bottle.png', '$_repliedCount개', noReplyText: _repliedCount == 0 ? "" : null),
-          ],
-        ),
-      ),
-    );
-  }
+
 
   Widget _buildCounterRow(String iconPath, String text, {String? noReplyText}) {
     return Row(
@@ -217,29 +248,29 @@ class _MyPageScreenState extends State<MyPageScreen> {
 
   // Build bottom navigation section
   Widget _buildBottomNav() {
-    return Positioned(
-      bottom: 80,
-      left: 20,
-      right: 20,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-        decoration: BoxDecoration(
-          color: const Color(0xFFBB8863).withOpacity(0.8),
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "$_islandName에 $_userName주민",
-              style: const TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            _buildEditButton(),
-          ],
-        ),
+  return Positioned(
+    bottom: 80,
+    left: 20,
+    right: 20,
+    child: Container(
+      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 20), // padding 줄임
+      decoration: BoxDecoration(
+        color: const Color(0xFFBB8863).withOpacity(0.8),
+        borderRadius: BorderRadius.circular(30),
       ),
-    );
-  }
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "$_islandName에 $_userName주민",
+            style: const TextStyle(color: Colors.white, fontSize: 14), // 폰트 크기 줄임
+          ),
+          _buildEditButton(),
+        ],
+      ),
+    ),
+  );
+}
 
   // Build edit button in bottom navigation
   Widget _buildEditButton() {
@@ -277,7 +308,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
       child: Container(
         height: 60,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.transparent,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
@@ -381,7 +412,7 @@ Widget _buildDeleteButton() {
           ),
         ],
         actionsPadding: EdgeInsets.zero,
-        actionsAlignment: MainAxisAlignment.start,
+        actionsAlignment: MainAxisAlignment.center,
       );
     },
   );
