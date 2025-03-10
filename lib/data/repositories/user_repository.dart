@@ -87,7 +87,7 @@ class UserRepository {
     }
   }
 
-  Future<void> deleteReply(String replyId) async {
+  Future<void> deleteReply(int replyId) async {
     try {
       await _apiService.deleteReply(replyId);  // API 호출
     } catch (e) {
@@ -95,7 +95,7 @@ class UserRepository {
     }
   }
 
-  Future<Map<String, dynamic>> recommendLetter(String letterId) async {
+  Future<Map<String, dynamic>> recommendLetter(int letterId) async {
     try {
       final response = await _apiService.recommendLetter(letterId);
 

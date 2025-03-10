@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
           case '/mypage':
             return MaterialPageRoute(builder: (context) => MyPageScreen());
           case '/replyDetail':
-            final String letterId = settings.arguments as String;
+            final int letterId = settings.arguments as int;
             return MaterialPageRoute(
               builder: (context) => ReplyDetailScreen(letterId: letterId),
             );

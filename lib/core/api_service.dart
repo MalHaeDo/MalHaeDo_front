@@ -7,8 +7,8 @@ class ApiService {
   ApiService() : _dio = Dio(
     BaseOptions(
       baseUrl: "http://malhaedo-server.shop/api/v0",
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
+      connectTimeout: const Duration(seconds: 20),
+      receiveTimeout: const Duration(seconds: 20),
       headers: {
         "Content-Type": "application/json",
       },
@@ -21,6 +21,10 @@ class ApiService {
         if (token != null) {
           options.headers['Authorization'] = 'Bearer $token';
         }
+        print("📡 [API 요청] ${options.method} ${options.uri}");
+        print("📝 [헤더] ${options.headers}");
+        print("📦 [데이터] ${options.data}");
+        options.extra['noCache'] = true;
         return handler.next(options);
       },
       onResponse: (response, handler) {
@@ -81,33 +85,40 @@ class ApiService {
   // ✅ 2. 게스트 로그인
   Future<Map<String, dynamic>> guestLogin() async {
   try {
-    final response = await _dio.post("/member/signup/guest");
+    final response = await _dio.get("/member/signup/guest");
 
-    // 응답 데이터를 명시적으로 Map으로 캐스팅
     var data = response.data as Map<String, dynamic>;
 
-    // 데이터 로그 확인
     print('API 응답: $data');
 
-    // accessToken 추출
     final accessToken = data['result']?['accessToken'];
 
-    // 액세스 토큰 로그 찍기
     print('액세스 토큰: $accessToken');
 
     if (accessToken != null) {
       final prefs = await SharedPreferences.getInstance();
-      String? storedToken = prefs.getString('accessToken');
-      print('저장된 액세스 토큰: $storedToken');
+      await prefs.setString('accessToken', accessToken); // 새 액세스 토큰 저장
       return data; // 응답 반환
     } else {
       throw Exception("accessToken이 응답에 없음");
     }
   } catch (e) {
+    // 404 오류 처리
+    if (e is DioException && e.response?.statusCode == 404) {
+      print('404 오류 발생: 기존 토큰 삭제 및 새 토큰 요청');
+
+      // 기존 토큰 삭제
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('accessToken');
+
+      // 재시도
+      return await guestLogin(); // 새 토큰으로 재시도
+    }
     print('게스트 로그인 실패: $e');
     throw Exception("게스트 로그인 실패");
   }
 }
+
 
   // ✅ 3. 사용자 정보 가져오기
   Future<Map<String, dynamic>> getUserInfo() async {
@@ -154,10 +165,16 @@ class ApiService {
   // ✅ 7. 액세스 토큰 재발급
   Future<Map<String, dynamic>> reissueAccessToken() async {
     try {
+      // /reissue/access-token API 요청
       final response = await _dio.post("/reissue/access-token");
 
-      // 새로운 토큰 저장
+      // 새로운 토큰을 SharedPreferences에 저장
       final prefs = await SharedPreferences.getInstance();
+      
+      // 기존 토큰 삭제
+      await prefs.remove('accessToken');
+      
+      // 새로운 토큰 저장
       await prefs.setString('accessToken', response.data['result']['accessToken']);
 
       return response.data;
@@ -166,12 +183,29 @@ class ApiService {
     }
   }
 
+// 401 오류를 처리하는 방법
+  Future<void> handle401Error(DioError error) async {
+    if (error.response?.statusCode == 401) {
+      // 401 에러가 발생했을 때, 액세스 토큰을 재발급 받음
+      try {
+        final newTokenData = await reissueAccessToken();
+      } catch (e) {
+        print("토큰 재발급 실패");
+      }
+    }
+  }
+
+
   // ✅ 8. 특정 편지에 대한 답장 조회
   Future<Map<String, dynamic>> getRepliesByLetterId(int letterId) async {
     try {
       final response = await _dio.get("/reply/$letterId");
+      print("응답 상태 코드: ${response.statusCode}");
+      print("답: $response");
+      print("답: ${response.data}");
       return response.data;
     } catch (e) {
+      print("오류: $e");
       throw Exception("답장 가져오기 실패");
     }
   }
@@ -197,7 +231,7 @@ class ApiService {
   }
 
   // ✅ 11. 특정 답장 삭제
-  Future<void> deleteReply(String replyId) async {
+  Future<void> deleteReply(int replyId) async {
     try {
       await _dio.delete("/reply/$replyId/delete");
     } catch (e) {
@@ -206,7 +240,7 @@ class ApiService {
   }
 
   // ✅ 12. 추천하기
-  Future<Map<String, dynamic>> recommendLetter(String letterId) async {
+  Future<Map<String, dynamic>> recommendLetter(int letterId) async {
   try {
     // API 호출
     final response = await _dio.post("/recommed/$letterId");

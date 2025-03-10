@@ -33,8 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       final response = await _userRepository.getReplyStorage();
       setState(() {
-        _sentCount = response['result']['sentCount'];
-        _repliedCount = response['result']['repliedCount'];
+        _sentCount = response['sentCount'];
+        _repliedCount = response['repliedCount'];
       });
     } catch (e) {
       print("Error fetching reply storage: $e");

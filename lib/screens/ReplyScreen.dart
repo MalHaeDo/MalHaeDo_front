@@ -26,15 +26,18 @@ class _ReplyScreenState extends State<ReplyScreen> {
   Future<void> _fetchLetterData() async {
     final prefs = await SharedPreferences.getInstance();
     _letterId = prefs.getInt('letterId');
+    //letterId로 Detail부분을 들어갔을 때, 이 친구는 사라져야함 약간 큐처럼 사용해야함
+    print("Fetched letterId from SharedPreferences: $_letterId");
     try {
       final response = await _userRepository.getRepliesByLetterId(_letterId!);
+      print("API 응답: $response");
       if (response['isSuccess']) {
         setState(() {
-          _senderName = response['result']['sender']; 
+          _senderName = response['sender']; 
           _isLoading = false;
-          _replyId = response['result']['replyId'];
-          print(_senderName);
-          print(_replyId);
+          _replyId = response['replyId'];
+          print("보낸이: $_senderName");
+          print("답장 ID: $_replyId");
         });
       }
     } catch (e) {
@@ -179,8 +182,8 @@ class _ReplyScreenState extends State<ReplyScreen> {
           // 노란색 알림 (구름 위)
           if (!_isLoading && _letterId != null)
             Positioned(
-              top: MediaQuery.of(context).size.height * 0.2,
-              left: MediaQuery.of(context).size.width * 0.5 - 15,
+              top: MediaQuery.of(context).size.height * 0.5 - 300,
+              left: MediaQuery.of(context).size.width * 0.5 - 60,
               child: GestureDetector(
                 onTap: () {
                   Navigator.of(context).pushNamed(
@@ -190,8 +193,8 @@ class _ReplyScreenState extends State<ReplyScreen> {
                 },
                 child: Image.asset(
                   getSenderIcon(_senderName), // sender에 맞는 느낌표 PNG 사용
-                  width: 30,
-                  height: 30,
+                  width: 150,
+                  height: 150,
                 ),
               ),
             ),

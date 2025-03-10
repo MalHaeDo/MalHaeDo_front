@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:malhaeboredo/data/repositories/user_repository.dart';
+import 'package:dio/dio.dart';
+import 'package:malhaeboredo/data/repositories/auth_repository.dart';
 
 class ReplyDetailScreen extends StatefulWidget {
-  final String letterId;
+  final int letterId;
   ReplyDetailScreen({required this.letterId});
 
   @override
@@ -12,7 +14,7 @@ class ReplyDetailScreen extends StatefulWidget {
 }
 
 class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
-  late String _replyMessage;
+  late String _replyMessage = '';
   bool _isFirstMessage = true;
   String? videoUrl;
   String? letterImage;
@@ -21,11 +23,12 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
   String? singer;
   String? senderName = '';
   final UserRepository _userRepository = UserRepository();
+  final AuthRepository _authRepository = AuthRepository();
 
   @override
   void initState() {
     super.initState();
-    _loadReplyData(widget.letterId as int);
+    _loadReplyData(widget.letterId);
     _loadRecommendedSong(widget.letterId);
   }
 
@@ -43,7 +46,7 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
     }
   }
 
-  Future<void> _loadRecommendedSong(String letterId) async {
+  Future<void> _loadRecommendedSong(int letterId) async {
     try {
       final songData = await recommendLetter(letterId);
       setState(() {
@@ -82,7 +85,7 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
     }
   }
 
-  Future<Map<String, dynamic>> recommendLetter(String letterId) async {
+  Future<Map<String, dynamic>> recommendLetter(int letterId) async {
   try {
     // API 호출
     final response = await _userRepository.recommendLetter(letterId);
@@ -121,7 +124,13 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
         throw Exception("답장 가져오기 실패: ${response['message']}");
       }
     } catch (e) {
+      if (e is DioError && e.response?.statusCode == 401) {
+      print('토큰 만료, 재발급 시도');
+      await _authRepository.reissueAccessToken();  // 토큰 재발급 함수 호출
+      return await getRepliesByLetterId(letterId);  // 재발급된 토큰으로 다시 시도
+    } else {
       throw Exception("답장 가져오기 실패: $e");
+    }
     }
   }
 
@@ -341,7 +350,7 @@ Widget _bottomButton(String text, Color color, String route, {Color textColor = 
 }
 
 // 답장 삭제 함수
-Future<void> _deleteReply(String letterId) async {
+Future<void> _deleteReply(int letterId) async {
   try {
     // 실제 삭제 로직 호출
     await _userRepository.deleteReply(letterId);
