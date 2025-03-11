@@ -236,7 +236,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             left: 24,
             right: 24,
             child: ElevatedButton(
-              onPressed: (_currentPage == 0 && _name.isEmpty) || (_currentPage == 1 && _islandName.isEmpty) ? null : _goToNextPage,
+              onPressed: (_currentPage == 0 && _name.trim().length >= 5) || (_currentPage == 1 && _islandName.length >= 5) ? null : _goToNextPage,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xBF8D5A34),
                 foregroundColor: Colors.white,
