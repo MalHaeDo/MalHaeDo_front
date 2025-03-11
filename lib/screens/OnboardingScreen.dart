@@ -222,7 +222,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                   ] else ...[
                     Text(
-                      _promptData[_currentPage]['content']!,
+                      _promptData[_currentPage]['content']!.replaceAll('{name}', _name),
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 15),
                     ),
