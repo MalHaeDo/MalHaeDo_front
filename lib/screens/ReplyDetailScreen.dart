@@ -345,16 +345,16 @@ String getSenderMessage(String senderName) {
       padding: const EdgeInsets.all(16),
       child: Row(
         children: [
-          _bottomButton('버리기', Colors.white, '/bottleLeft'),
+          _bottomButton('버리기', Colors.white),
           SizedBox(width: 16),
-          _bottomButton('보관하기', senderColor, '/home', textColor: Colors.white),
+          _bottomButton('보관하기', senderColor, textColor: Colors.white),
         ],
       ),
     );
   }
 
   // 하단 버튼 생성
-Widget _bottomButton(String text, Color color, String route, {Color textColor = Colors.black87}) {
+Widget _bottomButton(String text, Color color, {Color textColor = Colors.black87}) {
   return Expanded(
     child: ElevatedButton(
       onPressed: () async {

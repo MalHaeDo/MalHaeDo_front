@@ -238,7 +238,7 @@ class ApiService {
   Future<Map<String, dynamic>> recommendLetter(int letterId) async {
   try {
     // API 호출
-    final response = await _dio.post("/recommed/$letterId");
+    final response = await _dio.get("/recommed/$letterId");
 
     // 응답 처리
     if (response.statusCode == 200) {

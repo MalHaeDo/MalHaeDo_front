@@ -186,7 +186,7 @@ Future<void> _loadUserData() async {
                 child: Center(
                   child: Text(
                     "마이페이지",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
                   ),
                 ),
               ),
@@ -489,7 +489,7 @@ Widget _buildDeleteButton() {
                 '나중에 돌아올텐가?',
                 style: TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.normal,
                   color: Color(0xFF333333),
                 ),
               ),
@@ -598,7 +598,7 @@ Widget _buildDeleteButton() {
                 '진짜 떠날껀가? \n자네의 흔적이 모두 없어질 수 있다네..',
                 style: TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.normal,
                   color: Color(0xFF333333),
                 ),
               ),
