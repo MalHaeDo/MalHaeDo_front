@@ -324,7 +324,7 @@ void savedLetterId(int letterId) async {
                 ),
                 Spacer(),
                 IconButton(
-                  icon: Icon(Icons.refresh, color: Colors.white, size: 20),
+                  icon: Icon(Icons.refresh, color: Colors.brown, size: 20),
                   onPressed: _refreshMessage,
                 ),
               ],

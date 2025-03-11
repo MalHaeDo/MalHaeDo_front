@@ -4,6 +4,8 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:malhaeboredo/data/repositories/user_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:malhaeboredo/data/repositories/auth_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class ReplyDetailScreen extends StatefulWidget {
   final int letterId;
@@ -22,28 +24,50 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
   String? profileImage;
   String? singer;
   String? senderName = '';
+  String username = '';
   final UserRepository _userRepository = UserRepository();
   final AuthRepository _authRepository = AuthRepository();
 
   @override
-  void initState() {
-    super.initState();
-    _loadReplyData(widget.letterId);
-    _loadRecommendedSong(widget.letterId);
-  }
+    void initState() {
+      super.initState();
+      _initializeData();
+    }
+
+    Future<void> _initializeData() async {
+      await _loadReplyData(widget.letterId);
+      await _loadRecommendedSong(widget.letterId);
+      await _loadUserData();
+    }
 
   Future<void> _loadReplyData(int letterId) async {
-    try {
-      final replyData = await getRepliesByLetterId(letterId);
-      setState(() {
-        _replyMessage = replyData['content'];
-        senderName = replyData['sender'];
-        letterImage = _getLetterImage(senderName!);
-        profileImage = _getProfileImage(senderName!);
-      });
-    } catch (e) {
-      print(e);
-    }
+  final prefs = await SharedPreferences.getInstance();
+
+  // SharedPreferences에서 letterId를 키로 사용하여 저장된 데이터 가져오기
+  final storedLetterId = prefs.getInt('letterId');
+  
+  if (storedLetterId != null && storedLetterId == letterId) {
+    final replyMessage = prefs.getString('content') ?? "내용 없음";
+    final sender = prefs.getString('sender') ?? "Unknown";
+
+    setState(() {
+      _replyMessage = replyMessage;
+      senderName = sender;
+      letterImage = _getLetterImage(senderName!);
+      profileImage = _getProfileImage(senderName!);
+    });
+
+    print("Loaded from SharedPreferences: letterId=$letterId, sender=$sender, content=$replyMessage");
+  } else {
+    print("No matching letterId found in SharedPreferences");
+  }
+}
+
+Future<void> _loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      username = prefs.getString('user_name') ?? '';  // Default to empty if no data
+    });
   }
 
   Future<void> _loadRecommendedSong(int letterId) async {
@@ -71,6 +95,45 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
         return 'assets/images/paper1.png';  
     }
   }
+
+  String _getColorSender(String sender) {
+  switch (sender) {
+    case 'BAEBDURI':
+      return '0xFFFFC0CB'; // 핑크
+    case 'DARAMI':
+      return '0xFFADD8E6'; // 블루
+    case 'PENGLE':
+      return '0xFFFFD700'; // 골드
+    default:
+      return '0xFFA9A9A9'; // 회색
+  }
+}
+
+String _getColorSenderButton(String sender) {
+  switch (sender) {
+    case 'BAEBDURI':
+      return '0xFF4A5F'; // 핑크
+    case 'DARAMI':
+      return '0x0065CB'; // 블루
+    case 'PENGLE':
+      return '0xF7CB36'; // 골드
+    default:
+      return '0xFFA9A9A9'; // 회색
+  }
+}
+
+String getSenderMessage(String senderName) {
+  switch (senderName) {
+    case "BAEBDURI":
+      return "뱁뚜리 편지";
+    case "DARAMI":
+      return "다람이 편지";
+    case "PENGLE":
+      return "펭글이 편지";
+    default:
+      return "알 수 없는 보낸이 편지";
+  }
+}
 
   String _getProfileImage(String sender) {
     switch (sender) {
@@ -108,32 +171,6 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
   }
 }
 
-  Future<Map<String, dynamic>> getRepliesByLetterId(int letterId) async {
-    try {
-      final response = await _userRepository.getRepliesByLetterId(letterId);  // API 호출
-
-      if (response['isSuccess'] == true) {
-        return {
-          'isSuccess': true,
-          'message': response['message'],
-          'replyId': response['result']['replyId'],
-          'sender': response['result']['sender'],
-          'content': response['result']['content'],
-        };
-      } else {
-        throw Exception("답장 가져오기 실패: ${response['message']}");
-      }
-    } catch (e) {
-      if (e is DioError && e.response?.statusCode == 401) {
-      print('토큰 만료, 재발급 시도');
-      await _authRepository.reissueAccessToken();  // 토큰 재발급 함수 호출
-      return await getRepliesByLetterId(letterId);  // 재발급된 토큰으로 다시 시도
-    } else {
-      throw Exception("답장 가져오기 실패: $e");
-    }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,7 +196,7 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.normal,
                       ),
                     ),
                   ],
@@ -171,7 +208,7 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   children: [
-                  _messageTab("$senderName 편지", true),
+                  _messageTab(getSenderMessage(senderName ?? ""), true),
                   SizedBox(width: 10),
                   _messageTab("곰둥이장님 편지", false),
                   ],
@@ -228,8 +265,8 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
           padding: EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
             color: (_isFirstMessage == isFirst)
-                ? (isFirst ? Color(0xFFFFD54F) : Colors.brown)
-                : Colors.grey,
+                ? (isFirst ? Color(int.parse(_getColorSender(senderName ?? ""))) : Colors.brown)
+              : Colors.grey,
             borderRadius: BorderRadius.circular(30),
           ),
           child: Center(
@@ -239,7 +276,7 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
                 color: (_isFirstMessage == isFirst)
                 ? (isFirst ? Colors.black : Colors.white) :
                 Colors.white,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.normal,
               ),
             ),
           ),
@@ -255,18 +292,16 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
     child: Row(
       children: [
         CircleAvatar(
-          backgroundColor: Colors.white,
-          radius: 20,
           child: Image.asset(
             profileImage ?? 'assets/images/paper.png', // Use Image.asset here
-            width: 30,
-            height: 30,
+            width: 60,
+            height: 60,
             fit: BoxFit.contain,
           ),
         ),
         SizedBox(width: 10),
         Text(
-          'To. 웅이에게',
+          'To. $username에게',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -305,13 +340,14 @@ class _ReplyDetailScreenState extends State<ReplyDetailScreen> {
 
   // 하단 버튼
   Widget _bottomButtons() {
+    Color senderColor = senderName != null ? Color(int.parse(_getColorSenderButton(senderName!))) : Colors.grey;
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Row(
         children: [
           _bottomButton('버리기', Colors.white, '/bottleLeft'),
           SizedBox(width: 16),
-          _bottomButton('보관하기', _isFirstMessage ? Color(0xFFFFD54F) : Colors.brown, '/home', textColor: Colors.white),
+          _bottomButton('보관하기', senderColor, '/home', textColor: Colors.white),
         ],
       ),
     );
@@ -337,12 +373,12 @@ Widget _bottomButton(String text, Color color, String route, {Color textColor = 
       },
       child: Text(
         text,
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: textColor),
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: textColor),
       ),
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
         padding: EdgeInsets.symmetric(vertical: 12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         elevation: 0,
       ),
     ),

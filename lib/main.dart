@@ -11,8 +11,18 @@ import 'package:malhaeboredo/screens/BottleLeft.dart';
 import 'package:malhaeboredo/screens/LoginScreen.dart';
 import 'package:malhaeboredo/screens/SplashScreen.dart';
 import 'package:malhaeboredo/screens/MyPageScreen.dart';
+import 'dart:io';
+
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context){  // '?'를 추가해서 null safety 확보
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
+}
 
 void main() {
+  HttpOverrides.global = MyHttpOverrides();
   runApp(
     ProviderScope(  // ProviderScope 추가
       child: MyApp(),

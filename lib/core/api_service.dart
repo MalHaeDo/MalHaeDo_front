@@ -85,35 +85,30 @@ class ApiService {
   // ✅ 2. 게스트 로그인
   Future<Map<String, dynamic>> guestLogin() async {
   try {
+    // 기존 액세스 토큰 삭제
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('accessToken'); // 이전 토큰 삭제
+
+    // 게스트 로그인 요청
     final response = await _dio.get("/member/signup/guest");
 
     var data = response.data as Map<String, dynamic>;
-
     print('API 응답: $data');
 
     final accessToken = data['result']?['accessToken'];
-
     print('액세스 토큰: $accessToken');
 
     if (accessToken != null) {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('accessToken', accessToken); // 새 액세스 토큰 저장
+      // 새로운 액세스 토큰 저장
+      await prefs.setString('accessToken', accessToken);
+      print("새 액세스 토큰 저장됨: $accessToken");
+
       return data; // 응답 반환
     } else {
       throw Exception("accessToken이 응답에 없음");
     }
   } catch (e) {
-    // 404 오류 처리
-    if (e is DioException && e.response?.statusCode == 404) {
-      print('404 오류 발생: 기존 토큰 삭제 및 새 토큰 요청');
-
-      // 기존 토큰 삭제
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.remove('accessToken');
-
-      // 재시도
-      return await guestLogin(); // 새 토큰으로 재시도
-    }
+    // 오류 발생 시
     print('게스트 로그인 실패: $e');
     throw Exception("게스트 로그인 실패");
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:malhaeboredo/data/repositories/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class ReplyScreen extends StatefulWidget {
   @override
@@ -23,28 +24,52 @@ class _ReplyScreenState extends State<ReplyScreen> {
     _fetchLetterData();
   }
 
-  Future<void> _fetchLetterData() async {
-    final prefs = await SharedPreferences.getInstance();
-    _letterId = prefs.getInt('letterId');
-    //letterId로 Detail부분을 들어갔을 때, 이 친구는 사라져야함 약간 큐처럼 사용해야함
-    print("Fetched letterId from SharedPreferences: $_letterId");
-    try {
-      final response = await _userRepository.getRepliesByLetterId(_letterId!);
-      print("API 응답: $response");
+Future<void> _fetchLetterData() async {
+  final prefs = await SharedPreferences.getInstance();
+  _letterId = prefs.getInt('letterId');
+  print("📌 [SharedPreferences] Fetched letterId: $_letterId");
+
+  try {
+    final response = await _userRepository.getRepliesByLetterId(_letterId!);
+    print("📡 [API 응답] $response");
+
+    // 응답이 Map<String, dynamic> 형태일 때
+    if (response is Map<String, dynamic>) {
+      print("🧐 응답 데이터 구조: $response");
+
       if (response['isSuccess']) {
+        // 바로 필요한 값들 추출
+        final replyId = response['replyId'];
+        final sender = response['sender'];
+        final content = response['content'];
+
+        // SharedPreferences에 데이터 저장
+        await prefs.setInt('replyId', replyId);
+        await prefs.setString('sender', sender);
+        await prefs.setString('content', content);
+
         setState(() {
-          _senderName = response['sender']; 
+          _senderName = sender;
+          _replyId = replyId;
           _isLoading = false;
-          _replyId = response['replyId'];
-          print("보낸이: $_senderName");
-          print("답장 ID: $_replyId");
         });
+
+        print("✅ [API 성공]");
+        print("📩 보낸이: $_senderName");
+        print("🆔 답장 ID: $_replyId");
+        print("💬 내용: $content");
+      } else {
+        print("❌ [API 실패] isSuccess=false");
       }
-    } catch (e) {
-      print("API 호출 오류: $e");
-      setState(() => _isLoading = false);
+    } else {
+      print("🚨 [API 응답 오류] 응답이 Map이 아닙니다.");
     }
+  } catch (e) {
+    print("🚨 [API 호출 오류]: $e");
+    setState(() => _isLoading = false);
   }
+}
+
 
   void _fetchReplyStorage() async {
     try {
