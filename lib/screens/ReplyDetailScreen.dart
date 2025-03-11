@@ -112,15 +112,16 @@ Future<void> _loadUserData() async {
 String _getColorSenderButton(String sender) {
   switch (sender) {
     case 'BAEBDURI':
-      return '0xFF4A5F'; // 핑크
+      return Color(0xFFFF4A5F).toString(); // 핑크 (Color로 변환)
     case 'DARAMI':
-      return '0x0065CB'; // 블루
+      return Color(0xFF0065CB).toString(); // 블루 (Color로 변환)
     case 'PENGLE':
-      return '0xF7CB36'; // 골드
+      return Color(0xFFF7CB36).toString(); // 골드 (Color로 변환)
     default:
-      return '0xFFA9A9A9'; // 회색
+      return Color(0xFF6E381D).toString(); // 회색 (Color로 변환)
   }
 }
+
 
 String getSenderMessage(String senderName) {
   switch (senderName) {

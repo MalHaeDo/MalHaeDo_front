@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(width: 140),
+                    SizedBox(width: 120),
                     GestureDetector(
                       onTap: () async {
                         await Navigator.pushNamed(context, '/mypage');
@@ -116,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 60,
                         ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 10),
                   GestureDetector(
                     onTap: () async {
                       final result = await Navigator.pushNamed(context, '/write');

@@ -253,10 +253,10 @@ class _ReplyScreenState extends State<ReplyScreen> {
                     child: Center(
                       child: Image.asset(
                         _replyReceived
-                            ? 'assets/images/bottle_drag.png' // 답장이 오면 다른 이미지
+                            ? 'assets/images/bottle.png' // 답장이 오면 다른 이미지
                             : _isDragging
-                                ? 'assets/images/bottle.png' // 드래그 중 이미지
-                                : 'assets/images/bottle.png', // 기본 이미지
+                                ? 'assets/images/bottle_drag.png' // 드래그 중 이미지
+                                : 'assets/images/bottle_drag.png', // 기본 이미지
                         width: 60,
                         height: 60,
                       ),
@@ -271,7 +271,7 @@ class _ReplyScreenState extends State<ReplyScreen> {
           if (!_isLoading && _letterId != null)
             Positioned(
               top: MediaQuery.of(context).size.height * 0.5 - 300,
-              left: MediaQuery.of(context).size.width * 0.5 - 50,
+              left: MediaQuery.of(context).size.width * 0.5 - 70,
               child: GestureDetector(
                 onTap: () {
                   Navigator.of(context).pushNamed(
