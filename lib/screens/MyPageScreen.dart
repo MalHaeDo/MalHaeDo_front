@@ -213,7 +213,14 @@ Future<void> _loadUserData() async {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start, 
               children: [
-                Image.asset('assets/images/box.png', width: 50, height: 50), 
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context, '/replyList'
+                    );
+                  },
+                  child: Image.asset('assets/images/box.png', width: 50, height: 50),
+                ),
                 const SizedBox(height: 8),
                 Text('$_sentCount개', style: TextStyle(fontSize: 14)),
               ],

@@ -11,6 +11,7 @@ import 'package:malhaeboredo/screens/BottleLeft.dart';
 import 'package:malhaeboredo/screens/LoginScreen.dart';
 import 'package:malhaeboredo/screens/SplashScreen.dart';
 import 'package:malhaeboredo/screens/MyPageScreen.dart';
+import 'package:malhaeboredo/screens/ReplyListScreen.dart';
 import 'dart:io';
 
 class MyHttpOverrides extends HttpOverrides{
@@ -64,6 +65,8 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (context) => BottleLeftScreen());
           case '/mypage':
             return MaterialPageRoute(builder: (context) => MyPageScreen());
+          case '/replyList':
+            return MaterialPageRoute(builder: (context) => ReplyListScreen());
           case '/replyDetail':
             final int letterId = settings.arguments as int;
             return MaterialPageRoute(

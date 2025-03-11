@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:malhaeboredo/data/repositories/user_repository.dart';
 
 class ReplyListScreen extends StatefulWidget {
   const ReplyListScreen({Key? key}) : super(key: key);
@@ -12,6 +12,7 @@ class ReplyListScreen extends StatefulWidget {
 class _ReplyListScreenState extends State<ReplyListScreen> {
   bool _isLoading = true;
   List<ReplyItem> _replyList = [];
+  final UserRepository _userRepository = UserRepository();
   
   @override
   void initState() {
@@ -19,36 +20,20 @@ class _ReplyListScreenState extends State<ReplyListScreen> {
     _fetchReplyList();
   }
   
-  Future<void> _fetchReplyList() async {
+  Future<List<ReplyItem>> _fetchReplyList() async {
     try {
-      // Replace with your actual API endpoint
-      final response = await http.get(Uri.parse('your_api_endpoint_here'));
-      
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> data = json.decode(response.body);
-        
-        if (data['isSuccess'] == true) {
-          final result = data['result'];
-          final List<dynamic> replyListData = result['replyList'];
-          
-          setState(() {
-            _replyList = replyListData
-                .map((item) => ReplyItem.fromJson(item))
-                .toList();
-            _isLoading = false;
-          });
-        } else {
-          // Handle API success but business logic error
-          setState(() => _isLoading = false);
-        }
-      } else {
-        // Handle HTTP error
-        setState(() => _isLoading = false);
-      }
-    } catch (e) {
-      // Handle network or parsing error
-      setState(() => _isLoading = false);
+    final response = await _userRepository.getReplyList();  // API 호출
+
+    if (response['isSuccess'] == true) {
+      final List<dynamic> replyListData = response['result']['replyList'];  // replyList 추출
+      // 응답 데이터를 ReplyItem 목록으로 변환
+      return replyListData.map((item) => ReplyItem.fromJson(item)).toList(); // List<ReplyItem> 변환
+    } else {
+      throw Exception("답장 목록 조회 실패: ${response['message']}");
     }
+  } catch (e) {
+    throw Exception("답장 목록 조회 실패: $e");
+  }
   }
 
   @override
