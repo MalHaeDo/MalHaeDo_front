@@ -89,6 +89,7 @@ flutter:
       - assets/images/Tip_after.png
       - assets/images/Tip_before.png
       - assets/images/bottle_drag.png
+      - assets/images/motion_info.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
