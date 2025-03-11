@@ -87,8 +87,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                       child: Image.asset(
                         'assets/images/UserCircle.png', // 아이콘 이미지
-                        width: 20,
-                        height: 20,
+                        width: 40,
+                        height: 40,
                       ),
                     ),
                   ],
@@ -107,13 +107,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: _showMessage 
                       ? Image.asset(
                           'assets/images/Tip_before.png',  // "모든 감정을 담아보게, 괜찮네" 이미지 경로
-                          width: 200,  // 적절한 크기로 조정
-                          height: 40,
+                          width: 250,  // 적절한 크기로 조정
+                          height: 60,
                         )
                       : Image.asset(
                           'assets/images/Tip_after.png',  // "힘껏 날려보시게!" 이미지 경로
-                          width: 200,  // 적절한 크기로 조정
-                          height: 40,
+                          width: 250,  // 적절한 크기로 조정
+                          height: 60,
                         ),
                   ),
                   SizedBox(height: 20),

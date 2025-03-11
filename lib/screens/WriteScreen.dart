@@ -21,7 +21,7 @@ class _WriteScreenState extends State<WriteScreen> {
     super.initState();
     _textController.addListener(() {
       setState(() {
-        _sendButtonActive = _textController.text.isNotEmpty;
+        _sendButtonActive = _textController.text.length >= 15;
       });
     });
   }
@@ -131,7 +131,7 @@ void savedLetterId(int letterId) async {
   void _navigateToAnimation() {
     if (_textController.text.isNotEmpty) {
       _saveMessage();
-      Navigator.pushNamed(context, '/animation');
+      Navigator.pushNamed(context, '/reply');
     }
   }
 

@@ -199,8 +199,8 @@ class _ReplyScreenState extends State<ReplyScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Image.asset(
                     'assets/images/Tip_after.png',
-                    width: 200,
-                    height: 50,
+                    width: 250,
+                    height: 60,
                   ),
                 ),
                 SizedBox(height: 20),
@@ -228,6 +228,7 @@ class _ReplyScreenState extends State<ReplyScreen> {
                         _dragOffsetX = MediaQuery.of(context).size.width / 2 - 30;
                         _dragOffsetY = MediaQuery.of(context).size.height / 2 - 30;
                         _replyReceived = true;
+                        Navigator.pushNamed(context, '/animation');
                       });
                     } else {
                       setState(() {
@@ -270,7 +271,7 @@ class _ReplyScreenState extends State<ReplyScreen> {
           if (!_isLoading && _letterId != null)
             Positioned(
               top: MediaQuery.of(context).size.height * 0.5 - 300,
-              left: MediaQuery.of(context).size.width * 0.5 - 60,
+              left: MediaQuery.of(context).size.width * 0.5 - 50,
               child: GestureDetector(
                 onTap: () {
                   Navigator.of(context).pushNamed(
