@@ -19,6 +19,7 @@ class _ReplyScreenState extends State<ReplyScreen> {
   final UserRepository _userRepository = UserRepository();
   double _dragOffset = 0.0;
   bool _replyReceived = false;
+  bool _isDragging = false;
 
   @override
   void initState() {
@@ -177,10 +178,6 @@ Future<void> _fetchLetterData() async {
                   // 메시지 말풍선
                   Container(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: Color(0xBFA0622E),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
                   child: Image.asset(
                     'assets/images/Tip_after.png',
                     width: 200,
@@ -191,27 +188,65 @@ Future<void> _fetchLetterData() async {
                   SizedBox(height: 20),
                   
                   // 병 모양 버튼
-                  GestureDetector(
+                  Draggable(
+                  onDragUpdate: (details) {
+                    setState(() {
+                      _isDragging = true;
+                      _dragOffset += details.primaryDelta!;
+                    });
+                  },
+                  onDraggableCanceled: (_, __) {
+                    setState(() {
+                      _dragOffset = 0.0;
+                      _isDragging = false;
+                    });
+                  },
+                  onDragEnd: (details) {
+                    // 드래그가 끝나면 상태를 업데이트
+                    if (_dragOffset > 150) {
+                      setState(() {
+                        _replyReceived = true; // 답장이 도착한 상태로 변경
+                        _dragOffset = 0.0; // 초기화
+                      });
+                    } else {
+                      setState(() {
+                        _isDragging = false; // 드래그가 끝났을 때 초기화
+                      });
+                    }
+                  },
+                  child: GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(context, '/write');
                     },
                     child: Container(
                       child: Center(
+                        child: Image.asset(
+                          _replyReceived
+                              ? 'assets/images/bottle.png' // 답장이 오면 다른 이미지
+                              : _isDragging
+                                  ? 'assets/images/bottle_drag.png' // 드래그 중 이미지
+                                  : 'assets/images/bottle_drag.png', // 기본 이미지
+                          width: 60,
+                          height: 60,
+                        ),
+                      ),
+                    ),
+                  ),
+                  feedback: Container(
+                    child: Center(
                       child: Image.asset(
-                        _replyReceived
-                            ? 'assets/images/Tip_after.png' // 답장이 오면 다른 이미지
-                            : 'assets/images/bottle_drag.png', // 기본 이미지
+                        'assets/images/full_bottle.png', // 드래그 중에 보여지는 이미지
                         width: 60,
                         height: 60,
                       ),
                     ),
-                    ),
                   ),
-                ],
-              ),
+                  childWhenDragging: Container(), // 드래그 중에 보여지는 기본 상태 제거
+                ),
+              ],
             ),
-   
-          
+          ),
+         
           // 노란색 알림 (구름 위)
           if (!_isLoading && _letterId != null)
             Positioned(

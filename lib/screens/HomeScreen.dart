@@ -104,10 +104,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    decoration: BoxDecoration(
-                      color: Color(0xBFA0622E),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
                     child: _showMessage 
                       ? Image.asset(
                           'assets/images/Tip_before.png',  // "모든 감정을 담아보게, 괜찮네" 이미지 경로
