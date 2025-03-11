@@ -366,6 +366,7 @@ Widget _bottomButton(String text, Color color, {Color textColor = Colors.black87
             senderName = ''; // 발신자 초기화
             letterImage = null; // 편지지 이미지 초기화
           });
+          Navigator.pushNamed(context, '/bottleLeft');
         } else {
           // 보관하기 버튼일 경우
           Navigator.pushNamed(context, '/home');

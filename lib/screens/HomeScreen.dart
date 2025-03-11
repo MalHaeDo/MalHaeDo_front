@@ -108,13 +108,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Color(0xBFA0622E),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Text(
-                      _showMessage ? '힘껏 날려보시게!' : '모든 감정을 담아보게, 괜찮네',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
-                    ),
+                    child: _showMessage 
+                      ? Image.asset(
+                          'assets/images/Tip_before.png',  // "모든 감정을 담아보게, 괜찮네" 이미지 경로
+                          width: 200,  // 적절한 크기로 조정
+                          height: 40,
+                        )
+                      : Image.asset(
+                          'assets/images/Tip_after.png',  // "힘껏 날려보시게!" 이미지 경로
+                          width: 200,  // 적절한 크기로 조정
+                          height: 40,
+                        ),
                   ),
                   SizedBox(height: 20),
                   GestureDetector(

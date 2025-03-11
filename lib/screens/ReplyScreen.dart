@@ -17,11 +17,26 @@ class _ReplyScreenState extends State<ReplyScreen> {
   bool _showReplyModal = false;
 
   final UserRepository _userRepository = UserRepository();
+  double _dragOffset = 0.0;
+  bool _replyReceived = false;
 
   @override
   void initState() {
     super.initState();
     _fetchLetterData();
+  }
+
+  void _handleDragUpdate(DragUpdateDetails details) {
+    setState(() {
+      _dragOffset += details.primaryDelta!;
+      if (_dragOffset > 150) {
+        // 드래그가 150 이상이면 API 요청
+        if (!_isLoading) {
+          _isLoading = true;
+          _fetchLetterData();
+        }
+      }
+    });
   }
 
 Future<void> _fetchLetterData() async {
@@ -52,6 +67,7 @@ Future<void> _fetchLetterData() async {
           _senderName = sender;
           _replyId = replyId;
           _isLoading = false;
+          _replyReceived = true;
         });
 
         print("✅ [API 성공]");
@@ -160,19 +176,17 @@ Future<void> _fetchLetterData() async {
                 children: [
                   // 메시지 말풍선
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    decoration: BoxDecoration(
-                      color: Color(0xBFA0622E),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      '답장이 도착했네!',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
-                    ),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: Color(0xBFA0622E),
+                    borderRadius: BorderRadius.circular(20),
                   ),
+                  child: Image.asset(
+                    'assets/images/Tip_after.png',
+                    width: 200,
+                    height: 50,
+                  ),
+                ),
                   
                   SizedBox(height: 20),
                   
@@ -183,20 +197,14 @@ Future<void> _fetchLetterData() async {
                     },
                     child: Container(
                       child: Center(
-                        child: Image.asset(
-                          'assets/images/bottle.png', // 병 아이콘 이미지 (없으면 아이콘으로 대체)
-                          width: 60,
-                          height: 60,
-                          // 이미지가 없는 경우 아래 child 대신 사용
-                          errorBuilder: (context, error, stackTrace) {
-                            return Icon(
-                              Icons.wine_bar,
-                              color: Colors.white,
-                              size: 30,
-                            );
-                          },
-                        ),
+                      child: Image.asset(
+                        _replyReceived
+                            ? 'assets/images/Tip_after.png' // 답장이 오면 다른 이미지
+                            : 'assets/images/bottle_drag.png', // 기본 이미지
+                        width: 60,
+                        height: 60,
                       ),
+                    ),
                     ),
                   ),
                 ],
