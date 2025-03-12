@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:malhaeboredo/data/repositories/user_repository.dart';
 
 class WriteScreen extends StatefulWidget {
+  const WriteScreen({super.key});
+
   @override
   _WriteScreenState createState() => _WriteScreenState();
 }
@@ -11,7 +13,7 @@ class WriteScreen extends StatefulWidget {
 class _WriteScreenState extends State<WriteScreen> {
   final TextEditingController _textController = TextEditingController();
   bool _sendButtonActive = false;
-  bool _handleClick = false;
+  final bool _handleClick = false;
   bool _isLoading = false; // 로딩 상태 변수
   String _letterContent = ''; // 편지 내용
   final UserRepository _userRepository = UserRepository();
@@ -292,7 +294,7 @@ void savedLetterId(int letterId) async {
   }
 
   Widget _buildMessageCard() {
-  return Container(
+  return SizedBox(
     width: 350,  // 원하는 가로 크기로 설정
     child: Card(
       color: Color(0xBFFFFFFF),

@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:malhaeboredo/widgets/MyPageModal.dart';
 
 class MyPageScreen extends StatefulWidget {
-  const MyPageScreen({Key? key}) : super(key: key);
+  const MyPageScreen({super.key});
 
   @override
   _MyPageScreenState createState() => _MyPageScreenState();
@@ -22,6 +22,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
   late String _islandName = '';
   late List<Map<String, dynamic>> _bottleData = [];
   late int letterId = 0;
+  late String sender = '';
 
   @override
   void initState() {
@@ -30,6 +31,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
     _loadReplyList();
     _loadReplyStorage();
     _fetchBottleData();
+    _loadSenderAndBottleData();
   }
 
 Future<void> _loadUserData() async {
@@ -103,37 +105,113 @@ Future<void> _loadUserData() async {
   }
 
   Future<void> _fetchBottleData() async {
-    try {
-      final response = await _apiService.getRepliesByLetterId(letterId);
-      if (response['isSuccess'] == true) {
-        setState(() {
-          _bottleData = response['result']['bottleData'];
-        });
-      } else {
-        throw Exception("Failed to fetch bottle data: ${response['message']}");
-      }
-    } catch (e) {
-      print("Error fetching bottle data: $e");
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    final storedLetterId = prefs.getInt('letter_id') ?? 0;
+    final storedSender = prefs.getString('sender') ?? '';
+    
+    setState(() {
+      letterId = storedLetterId;
+    });
+    
+    print("Retrieved letterId: $letterId from SharedPreferences");
+    print("Retrieved sender: $storedSender from SharedPreferences");
+    
+    final response = await _apiService.getRepliesByLetterId(letterId);
+    print("Bottle data response: $response");
+    
+    if (response['isSuccess'] == true) {
+      setState(() {
+        _bottleData = List<Map<String, dynamic>>.from(response['result']['bottleData'] ?? []);
+        print("Bottle data: $_bottleData");
+      });
+    } else {
+      throw Exception("Failed to fetch bottle data: ${response['message']}");
     }
+  } catch (e) {
+    print("Error fetching bottle data: $e");
   }
+}
 
   List<Positioned> _generateBottlePositions() {
-    return _bottleData.map((bottle) {
-      final replyId = bottle['replyId'];
-      return Positioned(
-        left: bottle['left'],
-        top: bottle['top'],
+  // 테스트를 위해 _bottleData가 비어있을 경우 가상의 병 생성
+  if (_bottleData.isEmpty) {
+    print("No bottle data, creating default bottle");
+    return [
+      Positioned(
+        left: 100.0,
+        top: 200.0,
         child: GestureDetector(
-          onTap: () => _onBottleClick(replyId),
+          onTap: () => print("Default bottle clicked"),
           child: Image.asset(
-            'assets/images/bottle.png',
+            _getBottleImagePath(sender),
             width: 50,
             height: 70,
           ),
         ),
-      );
-    }).toList();
+      )
+    ];
   }
+  
+  return _bottleData.map((bottle) {
+    final replyId = bottle['replyId'];
+    final bottleSender = bottle['sender'] ?? sender;
+    
+    return Positioned(
+      left: _parseDouble(bottle['left'], 100.0),
+      top: _parseDouble(bottle['top'], 200.0),
+      child: GestureDetector(
+        onTap: () => _onBottleClick(replyId),
+        child: Image.asset(
+          _getBottleImagePath(bottleSender),
+          width: 50,
+          height: 70,
+        ),
+      ),
+    );
+  }).toList();
+}
+// 병 이미지 경로를 sender에 따라 다르게 반환하는 함수
+String _getBottleImagePath(String sender) {
+  switch (sender) {
+      case 'BAEBDURI':
+        return 'assets/images/Letter_b.png';
+      case 'DARAMI':
+        return 'assets/images/Letter_d.png';
+      case 'PENGLE':
+        return 'assets/images/Letter_p.png';
+      default:
+        return 'assets/images/full_bottle.png';  
+    }
+}
+
+// 안전하게 double 값으로 변환하는 헬퍼 함수
+double _parseDouble(dynamic value, double defaultValue) {
+  if (value == null) return defaultValue;
+  
+  try {
+    if (value is int) return value.toDouble();
+    if (value is double) return value;
+    if (value is String) return double.parse(value);
+    return defaultValue;
+  } catch(e) {
+    print("Error parsing double: $e");
+    return defaultValue;
+  }
+}
+
+Future<void> _loadSenderAndBottleData() async {
+  final prefs = await SharedPreferences.getInstance();
+  final storedLetterId = prefs.getInt('letter_id') ?? 0;
+  final storedSender = prefs.getString('sender') ?? '';
+  
+  setState(() {
+    letterId = storedLetterId;
+    sender = storedSender; // sender 변수 추가 필요
+  });
+  
+  await _fetchBottleData();
+}
 
   @override
   Widget build(BuildContext context) {
@@ -180,7 +258,7 @@ Future<void> _loadUserData() async {
             children: [
               IconButton(
                 icon: const Icon(Icons.arrow_back),
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => Navigator.pushNamed(context, '/home'),
               ),
               Expanded(
                 child: Center(
@@ -243,8 +321,6 @@ Future<void> _loadUserData() async {
   );
 }
 
-
-
   Widget _buildCounterRow(String iconPath, String text, {String? noReplyText}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -276,7 +352,7 @@ Future<void> _loadUserData() async {
               style: TextStyle(fontSize: 14), // 기본 스타일
               children: <TextSpan>[
                 TextSpan(
-                  text: "$_islandName",
+                  text: _islandName,
                   style: TextStyle(color: Colors.white), // 하얀색 텍스트
                 ),
                 TextSpan(
@@ -284,7 +360,7 @@ Future<void> _loadUserData() async {
                   style: TextStyle(color: Colors.black), // 하얀색 텍스트
                 ),
                 TextSpan(
-                  text: "$_userName",
+                  text: _userName,
                   style: TextStyle(color: Colors.white), // 검은색 텍스트
                 ),
                 TextSpan(

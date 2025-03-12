@@ -179,7 +179,7 @@ class ApiService {
   }
 
 // 401 오류를 처리하는 방법
-  Future<void> handle401Error(DioError error) async {
+  Future<void> handle401Error(DioException error) async {
     if (error.response?.statusCode == 401) {
       // 401 에러가 발생했을 때, 액세스 토큰을 재발급 받음
       try {

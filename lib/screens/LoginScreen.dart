@@ -8,7 +8,7 @@ import 'package:malhaeboredo/screens/OnboardingScreen.dart';
 final apiServiceProvider = Provider<ApiService>((ref) => ApiService());
 
 class LoginScreen extends ConsumerWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   void _showGuestConfirmationDialog(BuildContext context, WidgetRef ref) {
     final navigatorContext = context;

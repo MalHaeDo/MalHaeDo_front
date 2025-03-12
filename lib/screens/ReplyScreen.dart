@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class ReplyScreen extends StatefulWidget {
+  const ReplyScreen({super.key});
+
   @override
   _ReplyScreenState createState() => _ReplyScreenState();
 }
@@ -14,7 +16,7 @@ class _ReplyScreenState extends State<ReplyScreen> {
   int _repliedCount = 0;
   bool _isLoading = true;
   int _replyId = 0;
-  bool _showReplyModal = false;
+  final bool _showReplyModal = false;
 
   final UserRepository _userRepository = UserRepository();
   double _dragOffsetX = 0.0;
@@ -53,35 +55,31 @@ class _ReplyScreenState extends State<ReplyScreen> {
       print("📡 [API 응답] $response");
 
       // 응답이 Map<String, dynamic> 형태일 때
-      if (response is Map<String, dynamic>) {
-        print("🧐 응답 데이터 구조: $response");
+      print("🧐 응답 데이터 구조: $response");
 
-        if (response['isSuccess']) {
-          // 바로 필요한 값들 추출
-          final replyId = response['replyId'];
-          final sender = response['sender'];
-          final content = response['content'];
+      if (response['isSuccess']) {
+        // 바로 필요한 값들 추출
+        final replyId = response['replyId'];
+        final sender = response['sender'];
+        final content = response['content'];
 
-          // SharedPreferences에 데이터 저장
-          await prefs.setInt('replyId', replyId);
-          await prefs.setString('sender', sender);
-          await prefs.setString('content', content);
+        // SharedPreferences에 데이터 저장
+        await prefs.setInt('replyId', replyId);
+        await prefs.setString('sender', sender);
+        await prefs.setString('content', content);
 
-          setState(() {
-            _senderName = sender;
-            _replyId = replyId;
-            _isLoading = false;
-            _replyReceived = true;
-          });
+        setState(() {
+          _senderName = sender;
+          _replyId = replyId;
+          _isLoading = false;
+          _replyReceived = true;
+        });
 
-          print("✅ [API 성공] 성공");
-        } else {
-          print("❌ [API 실패] isSuccess=false");
-        }
+        print("✅ [API 성공] 성공");
       } else {
-        print("🚨 [API 응답 오류] 응답이 Map이 아닙니다.");
+        print("❌ [API 실패] isSuccess=false");
       }
-    } catch (e) {
+        } catch (e) {
       print("🚨 [API 호출 오류]: $e");
       setState(() => _isLoading = false);
     }

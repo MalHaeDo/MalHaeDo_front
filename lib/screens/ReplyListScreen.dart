@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'package:malhaeboredo/data/repositories/user_repository.dart';
 
 class ReplyListScreen extends StatefulWidget {
-  const ReplyListScreen({Key? key}) : super(key: key);
+  const ReplyListScreen({super.key});
 
   @override
   State<ReplyListScreen> createState() => _ReplyListScreenState();
 }
 
 class _ReplyListScreenState extends State<ReplyListScreen> {
-  bool _isLoading = true;
-  List<ReplyItem> _replyList = [];
+  final bool _isLoading = true;
+  final List<ReplyItem> _replyList = [];
   final UserRepository _userRepository = UserRepository();
   
   @override

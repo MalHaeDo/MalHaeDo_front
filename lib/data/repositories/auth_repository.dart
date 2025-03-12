@@ -1,4 +1,3 @@
-import 'package:dio/src/dio.dart';
 import 'package:malhaeboredo/core/api_service.dart';
 
 

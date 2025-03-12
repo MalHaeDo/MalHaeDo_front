@@ -3,6 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:malhaeboredo/data/repositories/user_repository.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -80,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(width: 120),
+                    SizedBox(width: 110),
                     GestureDetector(
                       onTap: () async {
                         await Navigator.pushNamed(context, '/mypage');

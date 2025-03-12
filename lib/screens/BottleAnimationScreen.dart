@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class BottleAnimationScreen extends StatelessWidget {
+  const BottleAnimationScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration(seconds: 3), () {

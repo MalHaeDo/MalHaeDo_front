@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({super.key});
+
   @override
   _OnboardingScreenState createState() => _OnboardingScreenState();
 }
@@ -146,7 +148,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                     child: Text(
                       _promptData[_currentPage]['title']!,
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white),
                     ),
                   ),
                   SizedBox(height: 15),
@@ -172,11 +174,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         border: InputBorder.none,
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30), // 원하는 radius 값
-                          borderSide: BorderSide(color: Colors.grey, width: 1), // 기본 테두리 색상
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30), // 원하는 radius 값
-                          borderSide: BorderSide(color: Colors.brown, width: 2), // 포커스된 상태 테두리 색상
                         ),
                       ),
                       style: TextStyle(
@@ -208,11 +208,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         border: InputBorder.none,
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30), // 원하는 radius 값
-                          borderSide: BorderSide(color: Colors.grey, width: 1), // 기본 테두리 색상
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30), // 원하는 radius 값
-                          borderSide: BorderSide(color: Colors.brown, width: 2), // 포커스된 상태 테두리 색상
                         ),
                       ),
                       style: TextStyle(

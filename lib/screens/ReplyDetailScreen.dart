@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ReplyDetailScreen extends StatefulWidget {
   final int letterId;
-  ReplyDetailScreen({required this.letterId});
+  const ReplyDetailScreen({super.key, required this.letterId});
 
   @override
   _ReplyDetailScreenState createState() => _ReplyDetailScreenState();
@@ -109,16 +109,16 @@ Future<void> _loadUserData() async {
   }
 }
 
-String _getColorSenderButton(String sender) {
+int _getColorSenderButton(String sender) {
   switch (sender) {
     case 'BAEBDURI':
-      return Color(0xFFFF4A5F).toString(); // 핑크 (Color로 변환)
+      return 0xFFFF4A5F; // 핑크
     case 'DARAMI':
-      return Color(0xFF0065CB).toString(); // 블루 (Color로 변환)
+      return 0xFF0065CB; // 블루
     case 'PENGLE':
-      return Color(0xFFF7CB36).toString(); // 골드 (Color로 변환)
+      return 0xFFF7CB36; // 골드
     default:
-      return Color(0xFF6E381D).toString(); // 회색 (Color로 변환)
+      return 0xFF6E381D; // 회색
   }
 }
 
@@ -341,7 +341,9 @@ String getSenderMessage(String senderName) {
 
   // 하단 버튼
   Widget _bottomButtons() {
-    Color senderColor = senderName != null ? Color(int.parse(_getColorSenderButton(senderName!))) : Colors.grey;
+    Color senderColor = senderName != null 
+    ? Color(_getColorSenderButton(senderName!)) 
+    : Colors.grey;
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Row(
@@ -373,15 +375,15 @@ Widget _bottomButton(String text, Color color, {Color textColor = Colors.black87
           Navigator.pushNamed(context, '/home');
         }
       },
-      child: Text(
-        text,
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: textColor),
-      ),
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
         padding: EdgeInsets.symmetric(vertical: 12),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         elevation: 0,
+      ),
+      child: Text(
+        text,
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: textColor),
       ),
     ),
   );
@@ -403,7 +405,7 @@ Future<void> _deleteReply(int letterId) async {
 class YoutubePlayerScreen extends StatelessWidget {
   final String videoUrl;
 
-  YoutubePlayerScreen({required this.videoUrl});
+  const YoutubePlayerScreen({super.key, required this.videoUrl});
 
   @override
   Widget build(BuildContext context) {

@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class IslandNameDialog extends StatefulWidget {
   final Function(String)? onSave;
   
-  const IslandNameDialog({Key? key, this.onSave}) : super(key: key);
+  const IslandNameDialog({super.key, this.onSave});
 
   @override
   _IslandNameDialogState createState() => _IslandNameDialogState();
@@ -14,7 +14,7 @@ class IslandNameDialog extends StatefulWidget {
 class _IslandNameDialogState extends State<IslandNameDialog> {
   final TextEditingController _islandNameController = TextEditingController();
   final TextEditingController _newNameController = TextEditingController();
-  bool _isLoading = false;
+  final bool _isLoading = false;
 
   @override
   void initState() {

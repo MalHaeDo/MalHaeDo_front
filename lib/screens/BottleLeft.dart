@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class BottleLeftScreen extends StatelessWidget {
+  const BottleLeftScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration(seconds: 3), () {
